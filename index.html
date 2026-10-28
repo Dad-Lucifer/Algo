@@ -259,33 +259,48 @@ fibonacci_search(0, 5, 10)
 def f(x):
     return (x - 2) ** 2
 
-def golden_section_search(a, b, tolerance):
-    golden_ratio = (np.sqrt(5) - 1) / 2
-    x1 = b - golden_ratio * (b - a)
-    x2 = a + golden_ratio * (b - a)
-    f1 = f(x1)
-    f2 = f(x2)
 
-    while abs(b - a) > tolerance:
-        if f1 > f2:
-            a = x1
-            x1 = x2
-            f1 = f2
-            x2 = a + golden_ratio * (b - a)
-            f2 = f(x2)
+def quadratic_fit_search(x1, x2, x3, tolerance):
+    while abs(x3 - x1) > tolerance:
+        f1 = f(x1)
+        f2 = f(x2)
+        f3 = f(x3)
+
+        # Calculate the minimum point using quadratic interpolation
+        numerator = (
+            (x2 - x1) ** 2 * (f2 - f3)
+            - (x2 - x3) ** 2 * (f2 - f1)
+        )
+
+        denominator = 2 * (
+            (x2 - x1) * (f2 - f3)
+            - (x2 - x3) * (f2 - f1)
+        )
+
+        if denominator == 0:
+            break
+
+        x_new = x2 - numerator / denominator
+        f_new = f(x_new)
+
+        if x_new < x2:
+            if f_new < f2:
+                x3 = x2
+                x2 = x_new
+            else:
+                x1 = x_new
         else:
-            b = x2
-            x2 = x1
-            f2 = f1
-            x1 = b - golden_ratio * (b - a)
-            f1 = f(x1)
+            if f_new < f2:
+                x1 = x2
+                x2 = x_new
+            else:
+                x3 = x_new
 
-    minimum = (a + b) / 2
-    print("Minimum point =", minimum)
-    print("Minimum value =", f(minimum))
+    print("Minimum point =", x2)
+    print("Minimum value =", f(x2))
 
-import numpy as np
-golden_section_search(0, 5, 0.001)
+
+quadratic_fit_search(0, 2.5, 5, 0.001)
 </script>
 
 <script type="text/plain" id="code4">
