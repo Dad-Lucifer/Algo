@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Docker download </title>
+<title>ADT Practicals - Advanced Database Techniques</title>
 <style>
 * {
     margin: 0;
@@ -303,6 +303,22 @@ body {
     margin-right: 12px;
 }
 
+/* ===== Section Title (Docker Setup / Queries) ===== */
+.section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 24px 0 12px 0;
+    padding-left: 12px;
+    border-left: 4px solid #2563eb;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.section-title:first-of-type {
+    margin-top: 0;
+}
+
 .btn {
     padding: 12px 24px;
     border: none;
@@ -409,6 +425,20 @@ body {
     font-weight: 700;
     white-space: nowrap;
     flex-shrink: 0;
+}
+
+.query-badge.docker-badge {
+    background: #064e3b;
+    color: #6ee7b7;
+}
+
+.docker-block {
+    border-color: #a7f3d0;
+}
+
+.docker-block:hover {
+    border-color: #059669;
+    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.15);
 }
 
 .btn-copy {
@@ -611,6 +641,7 @@ body {
 <h2><span class="pnum">Practical 1</span>Object Oriented Database Management System (PostgreSQL)</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p1', this)">Copy All</button>
 </div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -761,6 +792,7 @@ SELECT get_full_name(s.info), (s.info).age FROM students s ORDER BY (s.info).age
 <h2><span class="pnum">Practical 2</span>XML Database (BaseX)</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p2', this)">Copy All</button>
 </div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -874,6 +906,7 @@ CLOSE
 <h2><span class="pnum">Practical 3</span>Temporal Database (PostgreSQL)</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p3', this)">Copy All</button>
 </div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -1027,6 +1060,7 @@ SELECT emp_name, position, salary, valid_from, valid_to FROM employees ORDER BY 
 <h2><span class="pnum">Practical 4.1</span>MongoDB - CRUD Operations</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p4_1', this)">Copy All</button>
 </div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -1167,6 +1201,7 @@ db.dropDatabase()
 <h2><span class="pnum">Practical 4.2</span>Redis - CRUD Operations</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p4_2', this)">Copy All</button>
 </div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -1263,6 +1298,7 @@ FLUSHALL
 <h2><span class="pnum">Practical 5</span>Temporal Database (PostGIS Spatial Queries)</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p5', this)">Copy All</button>
 </div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -1379,6 +1415,22 @@ SELECT name, ST_Distance(geom::geography, ST_GeogFromText('SRID=4326;POINT(72.87
 <h2><span class="pnum">Practical 6.1</span>HBase - CRUD Operations</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p6_1', this)">Copy All</button>
 </div>
+<div class="section-title">Docker Setup</div>
+<div class="queries">
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 1</span>
+<button class="btn btn-copy" data-copy-target="p6_1-d1" onclick="copyDocker('p6_1', '1')">Copy</button>
+</div>
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 2</span>
+<button class="btn btn-copy" data-copy-target="p6_1-d2" onclick="copyDocker('p6_1', '2')">Copy</button>
+</div>
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 3</span>
+<button class="btn btn-copy" data-copy-target="p6_1-d3" onclick="copyDocker('p6_1', '3')">Copy</button>
+</div>
+</div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -1547,6 +1599,15 @@ drop 'college:students'
 <script type="text/plain" data-num="18" data-label="To exit from HBase shell" id="code-p6_1-q18">
 exit
 </script>
+<script type="text/plain" data-num="1" data-label="Start HBase container" data-docker="1" id="code-p6_1-d1">
+docker run -d --name hbase -p 2181:2181 -p 16010:16010 -p 9090:9090 harisekhon/hbase
+</script>
+<script type="text/plain" data-num="2" data-label="Check container status" data-docker="1" id="code-p6_1-d2">
+docker ps
+</script>
+<script type="text/plain" data-num="3" data-label="Open HBase shell" data-docker="1" id="code-p6_1-d3">
+docker exec -it hbase hbase shell
+</script>
 </div>
 </section>
 <section id="page-p6_2" class="page">
@@ -1554,6 +1615,22 @@ exit
 <h2><span class="pnum">Practical 6.2</span>Apache Cassandra - CRUD Operations</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p6_2', this)">Copy All</button>
 </div>
+<div class="section-title">Docker Setup</div>
+<div class="queries">
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 1</span>
+<button class="btn btn-copy" data-copy-target="p6_2-d1" onclick="copyDocker('p6_2', '1')">Copy</button>
+</div>
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 2</span>
+<button class="btn btn-copy" data-copy-target="p6_2-d2" onclick="copyDocker('p6_2', '2')">Copy</button>
+</div>
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 3</span>
+<button class="btn btn-copy" data-copy-target="p6_2-d3" onclick="copyDocker('p6_2', '3')">Copy</button>
+</div>
+</div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -1682,6 +1759,15 @@ DROP KEYSPACE mydb;
 <script type="text/plain" data-num="17" data-label="Exit from shell" id="code-p6_2-q17">
 exit;
 </script>
+<script type="text/plain" data-num="1" data-label="Start Cassandra container" data-docker="1" id="code-p6_2-d1">
+docker run -d --name cassandra -p 9042:9042 cassandra
+</script>
+<script type="text/plain" data-num="2" data-label="Check container status" data-docker="1" id="code-p6_2-d2">
+docker ps
+</script>
+<script type="text/plain" data-num="3" data-label="Open CQL shell" data-docker="1" id="code-p6_2-d3">
+docker exec -it cassandra cqlsh
+</script>
 </div>
 </section>
 <section id="page-p7" class="page">
@@ -1689,6 +1775,7 @@ exit;
 <h2><span class="pnum">Practical 7</span>MapReduce Functions (MongoDB)</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p7', this)">Copy All</button>
 </div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -1767,6 +1854,18 @@ db.city_gender_count.find().pretty()
 <h2><span class="pnum">Practical 8.1</span>Indexing and Ordering Operations (MongoDB)</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p8_1', this)">Copy All</button>
 </div>
+<div class="section-title">Docker Setup</div>
+<div class="queries">
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 1</span>
+<button class="btn btn-copy" data-copy-target="p8_1-d1" onclick="copyDocker('p8_1', '1')">Copy</button>
+</div>
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 2</span>
+<button class="btn btn-copy" data-copy-target="p8_1-d2" onclick="copyDocker('p8_1', '2')">Copy</button>
+</div>
+</div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -1858,6 +1957,12 @@ db.employees.find({ department: "IT" }).sort({ salary: -1 })
 <script type="text/plain" data-num="11" data-label="Drop Index" id="code-p8_1-q11">
 db.employees.dropIndex("salary_1")
 </script>
+<script type="text/plain" data-num="1" data-label="Start MongoDB container" data-docker="1" id="code-p8_1-d1">
+docker run -d --name mongoDB -p 27017:27017 mongo
+</script>
+<script type="text/plain" data-num="2" data-label="Open MongoDB shell" data-docker="1" id="code-p8_1-d2">
+docker exec -it mongoDB mongosh
+</script>
 </div>
 </section>
 <section id="page-p8_2" class="page">
@@ -1865,6 +1970,18 @@ db.employees.dropIndex("salary_1")
 <h2><span class="pnum">Practical 8.2</span>Indexing And Ordering Operations (Apache Cassandra)</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p8_2', this)">Copy All</button>
 </div>
+<div class="section-title">Docker Setup</div>
+<div class="queries">
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 1</span>
+<button class="btn btn-copy" data-copy-target="p8_2-d1" onclick="copyDocker('p8_2', '1')">Copy</button>
+</div>
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 2</span>
+<button class="btn btn-copy" data-copy-target="p8_2-d2" onclick="copyDocker('p8_2', '2')">Copy</button>
+</div>
+</div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 1</span>
@@ -1988,6 +2105,12 @@ SELECT * FROM student_marks;
 <script type="text/plain" data-num="11" data-label="Perform Ordering (Automatically in DESC due to Clustering Key)" id="code-p8_2-q11">
 SELECT * FROM student_marks WHERE city = 'Mumbai';
 </script>
+<script type="text/plain" data-num="1" data-label="Start Cassandra container" data-docker="1" id="code-p8_2-d1">
+docker run -d --name cassandraDB -p 9042:9042 cassandra
+</script>
+<script type="text/plain" data-num="2" data-label="Open CQL shell" data-docker="1" id="code-p8_2-d2">
+docker exec -it cassandraDB cqlsh
+</script>
 </div>
 </section>
 <section id="page-p8_3" class="page">
@@ -1995,6 +2118,26 @@ SELECT * FROM student_marks WHERE city = 'Mumbai';
 <h2><span class="pnum">Practical 8.3</span>Indexing And Ordering Operations (CouchDB)</h2>
 <button class="btn btn-copy-all" onclick="copyAll('p8_3', this)">Copy All</button>
 </div>
+<div class="section-title">Docker Setup</div>
+<div class="queries">
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 1</span>
+<button class="btn btn-copy" data-copy-target="p8_3-d1" onclick="copyDocker('p8_3', '1')">Copy</button>
+</div>
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 2</span>
+<button class="btn btn-copy" data-copy-target="p8_3-d2" onclick="copyDocker('p8_3', '2')">Copy</button>
+</div>
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 3</span>
+<button class="btn btn-copy" data-copy-target="p8_3-d3" onclick="copyDocker('p8_3', '3')">Copy</button>
+</div>
+<div class="query-block docker-block">
+<span class="query-badge docker-badge">Docker 4</span>
+<button class="btn btn-copy" data-copy-target="p8_3-d4" onclick="copyDocker('p8_3', '4')">Copy</button>
+</div>
+</div>
+<div class="section-title">Queries</div>
 <div class="queries multi">
 <div class="query-block">
 <span class="query-badge">Query 0</span>
@@ -2087,6 +2230,18 @@ curl -X POST http://admin:admin@localhost:5984/collegedb/_index -H "Content-Type
 <script type="text/plain" data-num="9" data-label="Verify Ascending Ordering" id="code-p8_3-q9">
 curl -X POST http://admin:admin@localhost:5984/collegedb/_find -H "Content-Type: application/json" -d "{\"selector\":{\"marks\":{\"$gte\":0}},\"sort\":[{\"marks\":\"asc\"}],\"use_index\":\"marks_asc_index\"}"
 </script>
+<script type="text/plain" data-num="1" data-label="Start CouchDB container" data-docker="1" id="code-p8_3-d1">
+docker run -d --name couchdbDB -p 5984:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=admin couchdb
+</script>
+<script type="text/plain" data-num="2" data-label="Check container status" data-docker="1" id="code-p8_3-d2">
+docker ps
+</script>
+<script type="text/plain" data-num="3" data-label="Check CouchDB status" data-docker="1" id="code-p8_3-d3">
+curl http://localhost:5984/
+</script>
+<script type="text/plain" data-num="4" data-label="Open Fauxton in browser" data-docker="1" id="code-p8_3-d4">
+http://localhost:5984/_utils/
+</script>
 </div>
 </section>
 </main>
@@ -2155,7 +2310,16 @@ function copyQuery(practicalId, queryNum) {
     copyToClipboard(text, btn);
 }
 
-// ===== Copy All Queries of a Practical =====
+// ===== Copy Single Docker Command =====
+function copyDocker(practicalId, dockerNum) {
+    const el = document.getElementById('code-' + practicalId + '-d' + dockerNum);
+    if (!el) return;
+    const text = el.textContent;
+    const btn = document.querySelector('[data-copy-target="' + practicalId + '-d' + dockerNum + '"]');
+    copyToClipboard(text, btn);
+}
+
+// ===== Copy All Queries (and Docker) of a Practical =====
 function copyAll(practicalId, btnElement) {
     const container = document.getElementById('codes-' + practicalId);
     if (!container) return;
