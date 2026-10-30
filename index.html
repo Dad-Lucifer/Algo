@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Image Processing Practicals</title>
+<title>Resources</title>
 <style>
     body {
         font-family: Arial;
@@ -10,11 +10,13 @@
     }
     table {
         border-collapse: collapse;
-        width: 100%;
+        width: auto;
+        max-width: 700px;
+        font-size: 14px;
     }
     th, td {
         border: 1px solid #999;
-        padding: 10px;
+        padding: 4px 8px;
         text-align: left;
     }
     th {
@@ -29,12 +31,27 @@
     }
     button {
         cursor: pointer;
-        width: 80px;
+        width: 70px;
+        padding: 3px 8px;
+        font-size: 13px;
+    }
+    .item {
+        margin: 15px 0;
+        max-width: 700px;
+    }
+    .item button {
+        margin-left: 10px;
     }
 </style>
 </head>
 <body>
-    <h1>Image Processing Practicals</h1>
+    <h1>Resources</h1>
+
+    <div class="item">
+        <strong>Universal Libraries Install Command</strong>
+        <button onclick="copyInstall(this)">Copy</button>
+        <div style="margin-top:6px; font-family:monospace; background:#f4f4f4; padding:6px 10px; border:1px solid #ccc; border-radius:4px; display:inline-block;">pip install opencv-python numpy matplotlib</div>
+    </div>
 
     <table>
         <tr>
@@ -336,6 +353,13 @@ cv2.destroyAllWindows()</textarea>
         function copyCode(id, btn) {
             var text = document.getElementById(id).value;
             navigator.clipboard.writeText(text);
+            btn.innerText = 'Copied!';
+            setTimeout(function() {
+                btn.innerText = 'Copy';
+            }, 2000);
+        }
+        function copyInstall(btn) {
+            navigator.clipboard.writeText('pip install opencv-python numpy matplotlib');
             btn.innerText = 'Copied!';
             setTimeout(function() {
                 btn.innerText = 'Copy';
