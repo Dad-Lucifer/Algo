@@ -1,2368 +1,346 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADT Practicals - Advanced Database Techniques</title>
+<title>Image Processing Practicals</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f2f5;
-    color: #1e293b;
-    line-height: 1.6;
-}
-
-/* ===== Top Navbar ===== */
-.topnav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid #e2e8f0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.topnav-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.topnav-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-
-.topnav-brand .brand-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: #ffffff;
-    border-radius: 10px;
-    font-weight: 800;
-    font-size: 16px;
-}
-
-.topnav-brand .brand-text {
-    line-height: 1.2;
-}
-
-.topnav-brand .brand-text .t1 {
-    font-size: 15px;
-    font-weight: 700;
-    color: #1e293b;
-}
-
-.topnav-brand .brand-text .t2 {
-    font-size: 11px;
-    color: #64748b;
-}
-
-.chips {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    flex: 1;
-    padding: 4px 2px;
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
-}
-
-.chips::-webkit-scrollbar {
-    height: 6px;
-}
-
-.chips::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 3px;
-}
-
-.chips::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    color: #475569;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-    font-family: inherit;
-    flex-shrink: 0;
-}
-
-.chip:hover {
-    background: #e0e7ff;
-    border-color: #93c5fd;
-    color: #2563eb;
-}
-
-.chip.active {
-    background: #2563eb;
-    border-color: #2563eb;
-    color: #ffffff;
-}
-
-.chip .chip-num {
-    background: #cbd5e1;
-    color: #1e293b;
-    padding: 1px 7px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.chip.active .chip-num {
-    background: rgba(255,255,255,0.25);
-    color: #ffffff;
-}
-
-.chip.home-chip .chip-num {
-    background: #fbbf24;
-    color: #78350f;
-}
-
-/* ===== Main Content ===== */
-.main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 32px 24px;
-    min-height: calc(100vh - 70px);
-}
-
-.page {
-    display: none;
-    animation: fadeIn 0.3s ease;
-}
-
-.page.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== Home Page ===== */
-.home-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.home-header h1 {
-    font-size: 32px;
-    font-weight: 800;
-    color: #1e293b;
-    margin-bottom: 8px;
-}
-
-.home-header .subtitle {
-    font-size: 16px;
-    color: #64748b;
-}
-
-.home-header .course-code {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 6px 16px;
-    background: #dbeafe;
-    color: #1d4ed8;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.filter-section {
-    margin-bottom: 32px;
-}
-
-.filter-section input {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    display: block;
-    padding: 14px 20px;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 15px;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-.filter-section input:focus {
-    border-color: #3b82f6;
-}
-
-.practical-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.practical-card {
-    background: #ffffff;
-    border: 2px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 24px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-}
-
-.practical-card:hover {
-    border-color: #3b82f6;
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(59, 130, 246, 0.15);
-}
-
-.practical-card .card-num {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 52px;
-    height: 52px;
-    min-width: 52px;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: #ffffff;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.practical-card .card-body h3 {
-    font-size: 15px;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 6px;
-    line-height: 1.4;
-}
-
-.practical-card .card-body .card-meta {
-    font-size: 12px;
-    color: #64748b;
-}
-
-/* ===== Practical Page ===== */
-.practical-header {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 28px 32px;
-    margin-bottom: 28px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.practical-header h2 {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1e293b;
-    flex: 1;
-    min-width: 250px;
-}
-
-.practical-header h2 .pnum {
-    display: inline-block;
-    padding: 4px 12px;
-    background: #2563eb;
-    color: #ffffff;
-    border-radius: 8px;
-    font-size: 16px;
-    margin-right: 12px;
-}
-
-/* ===== Section Title (Docker Setup / Queries) ===== */
-.section-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #1e293b;
-    margin: 24px 0 12px 0;
-    padding-left: 12px;
-    border-left: 4px solid #2563eb;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.section-title:first-of-type {
-    margin-top: 0;
-}
-
-.btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-primary {
-    background: #2563eb;
-    color: #ffffff;
-}
-
-.btn-primary:hover {
-    background: #1d4ed8;
-    transform: translateY(-1px);
-}
-
-.btn-copy-all {
-    background: linear-gradient(135deg, #059669, #047857);
-    color: #ffffff;
-    padding: 12px 28px;
-    font-size: 15px;
-}
-
-.btn-copy-all:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35);
-}
-
-.btn-copy-all.copied {
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
-}
-
-.btn-copy {
-    background: #2563eb;
-    color: #ffffff;
-    padding: 6px 16px;
-    font-size: 12px;
-}
-
-.btn-copy:hover {
-    background: #1d4ed8;
-}
-
-.btn-copy.copied {
-    background: #059669;
-}
-
-/* ===== Query Block ===== */
-.queries {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-/* Multi-column layout for practicals with more than 6 queries */
-.queries.multi {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-}
-
-.query-block {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 6px 8px;
-    gap: 6px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.query-block:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.12);
-}
-
-.query-label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-width: 0;
-}
-
-.query-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 62px;
-    padding: 4px 6px;
-    background: #1e293b;
-    color: #93c5fd;
-    border-radius: 5px;
-    font-size: 11px;
-    font-weight: 700;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.query-badge.docker-badge {
-    background: #064e3b;
-    color: #6ee7b7;
-}
-
-.docker-block {
-    border-color: #a7f3d0;
-}
-
-.docker-block:hover {
-    border-color: #059669;
-    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.15);
-}
-
-.btn-copy {
-    background: #2563eb;
-    color: #ffffff;
-    padding: 5px 12px;
-    font-size: 11px;
-    border-radius: 6px;
-    flex-shrink: 0;
-    font-weight: 600;
-}
-
-/* ===== Toast ===== */
-.toast {
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    background: #059669;
-    color: #ffffff;
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    box-shadow: 0 10px 30px rgba(5, 150, 105, 0.4);
-    transform: translateY(120px);
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 1000;
-    pointer-events: none;
-}
-
-.toast.show {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 900px) {
-    .topnav-inner {
-        padding: 10px 14px;
-        gap: 10px;
-    }
-    .topnav-brand .brand-text {
-        display: none;
-    }
-    .main {
-        padding: 20px 14px;
-    }
-    .practical-header {
-        flex-direction: column;
-        align-items: stretch;
+    body {
+        font-family: Arial;
         padding: 20px;
     }
-    .practical-header h2 {
-        font-size: 17px;
+    table {
+        border-collapse: collapse;
+        width: 100%;
     }
-    .home-header h1 {
-        font-size: 22px;
+    th, td {
+        border: 1px solid #999;
+        padding: 10px;
+        text-align: left;
     }
-    .practical-grid {
-        grid-template-columns: 1fr;
+    th {
+        background: #eee;
     }
-    .chip {
-        padding: 7px 11px;
-        font-size: 12px;
+    td.name {
+        width: 80%;
     }
-    /* On mobile, reduce to 2 columns to fit small screens */
-    .queries.multi {
-        grid-template-columns: repeat(2, 1fr);
+    td.btn {
+        text-align: center;
+        width: 20%;
     }
-    .query-badge {
-        min-width: 54px;
+    button {
+        cursor: pointer;
+        width: 80px;
     }
-}
 </style>
 </head>
 <body>
-<nav class="topnav">
-<div class="topnav-inner">
-<div class="topnav-brand" onclick="showPage('home')">
-<div class="brand-icon">A</div>
-<div class="brand-text"><div class="t1">ADT Practicals</div><div class="t2">25CSMJP72</div></div>
-</div>
-<div class="chips">
-<button class="chip home-chip active" data-target="home" onclick="showPage('home')"><span class="chip-num">&#8962;</span> Home</button>
-<button class="chip" data-target="p1" onclick="showPage('p1')"><span class="chip-num">1</span> Object Oriented Database Management Sy...</button>
-<button class="chip" data-target="p2" onclick="showPage('p2')"><span class="chip-num">2</span> XML Database (BaseX)</button>
-<button class="chip" data-target="p3" onclick="showPage('p3')"><span class="chip-num">3</span> Temporal Database (PostgreSQL)</button>
-<button class="chip" data-target="p4_1" onclick="showPage('p4_1')"><span class="chip-num">4.1</span> MongoDB - CRUD Operations</button>
-<button class="chip" data-target="p4_2" onclick="showPage('p4_2')"><span class="chip-num">4.2</span> Redis - CRUD Operations</button>
-<button class="chip" data-target="p5" onclick="showPage('p5')"><span class="chip-num">5</span> Temporal Database (PostGIS Spatial Que...</button>
-<button class="chip" data-target="p6_1" onclick="showPage('p6_1')"><span class="chip-num">6.1</span> HBase - CRUD Operations</button>
-<button class="chip" data-target="p6_2" onclick="showPage('p6_2')"><span class="chip-num">6.2</span> Apache Cassandra - CRUD Operations</button>
-<button class="chip" data-target="p7" onclick="showPage('p7')"><span class="chip-num">7</span> MapReduce Functions (MongoDB)</button>
-<button class="chip" data-target="p8_1" onclick="showPage('p8_1')"><span class="chip-num">8.1</span> Indexing and Ordering Operations (Mong...</button>
-<button class="chip" data-target="p8_2" onclick="showPage('p8_2')"><span class="chip-num">8.2</span> Indexing And Ordering Operations (Apac...</button>
-<button class="chip" data-target="p8_3" onclick="showPage('p8_3')"><span class="chip-num">8.3</span> Indexing And Ordering Operations (Couc...</button>
-</div>
-</div>
-</nav>
-<main class="main">
-<section id="page-home" class="page active">
-<div class="home-header">
-<h1>Advanced Database Techniques</h1>
-<p class="subtitle">Practical Journal Code Reference</p>
-<span class="course-code">25CSMJP72 &middot; MSc Computer Science</span>
-</div>
-<div class="filter-section">
-<input type="text" id="homeFilter" placeholder="Search practicals by name or number..." oninput="filterHome()">
-</div>
-<div class="practical-grid" id="practicalGrid">
-<div class="practical-card" data-target="p1" onclick="showPage('p1')">
-<div class="card-num">1</div>
-<div class="card-body">
-<h3>Object Oriented Database Management System (PostgreSQL)</h3>
-<p class="card-meta">18 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p2" onclick="showPage('p2')">
-<div class="card-num">2</div>
-<div class="card-body">
-<h3>XML Database (BaseX)</h3>
-<p class="card-meta">13 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p3" onclick="showPage('p3')">
-<div class="card-num">3</div>
-<div class="card-body">
-<h3>Temporal Database (PostgreSQL)</h3>
-<p class="card-meta">18 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p4_1" onclick="showPage('p4_1')">
-<div class="card-num">4.1</div>
-<div class="card-body">
-<h3>MongoDB - CRUD Operations</h3>
-<p class="card-meta">17 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p4_2" onclick="showPage('p4_2')">
-<div class="card-num">4.2</div>
-<div class="card-body">
-<h3>Redis - CRUD Operations</h3>
-<p class="card-meta">11 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p5" onclick="showPage('p5')">
-<div class="card-num">5</div>
-<div class="card-body">
-<h3>Temporal Database (PostGIS Spatial Queries)</h3>
-<p class="card-meta">13 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p6_1" onclick="showPage('p6_1')">
-<div class="card-num">6.1</div>
-<div class="card-body">
-<h3>HBase - CRUD Operations</h3>
-<p class="card-meta">18 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p6_2" onclick="showPage('p6_2')">
-<div class="card-num">6.2</div>
-<div class="card-body">
-<h3>Apache Cassandra - CRUD Operations</h3>
-<p class="card-meta">17 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p7" onclick="showPage('p7')">
-<div class="card-num">7</div>
-<div class="card-body">
-<h3>MapReduce Functions (MongoDB)</h3>
-<p class="card-meta">7 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p8_1" onclick="showPage('p8_1')">
-<div class="card-num">8.1</div>
-<div class="card-body">
-<h3>Indexing and Ordering Operations (MongoDB)</h3>
-<p class="card-meta">11 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p8_2" onclick="showPage('p8_2')">
-<div class="card-num">8.2</div>
-<div class="card-body">
-<h3>Indexing And Ordering Operations (Apache Cassandra)</h3>
-<p class="card-meta">11 queries</p>
-</div>
-</div>
-<div class="practical-card" data-target="p8_3" onclick="showPage('p8_3')">
-<div class="card-num">8.3</div>
-<div class="card-body">
-<h3>Indexing And Ordering Operations (CouchDB)</h3>
-<p class="card-meta">10 queries</p>
-</div>
-</div>
-</div>
-</section>
-<section id="page-p1" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 1</span>Object Oriented Database Management System (PostgreSQL)</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p1', this)">Copy All</button>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p1-q1" onclick="copyQuery('p1', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p1-q2" onclick="copyQuery('p1', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p1-q3" onclick="copyQuery('p1', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p1-q4" onclick="copyQuery('p1', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p1-q5" onclick="copyQuery('p1', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p1-q6" onclick="copyQuery('p1', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p1-q7" onclick="copyQuery('p1', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p1-q8" onclick="copyQuery('p1', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p1-q9" onclick="copyQuery('p1', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p1-q10" onclick="copyQuery('p1', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p1-q11" onclick="copyQuery('p1', '11')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 12</span>
-<button class="btn btn-copy" data-copy-target="p1-q12" onclick="copyQuery('p1', '12')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 13</span>
-<button class="btn btn-copy" data-copy-target="p1-q13" onclick="copyQuery('p1', '13')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 14</span>
-<button class="btn btn-copy" data-copy-target="p1-q14" onclick="copyQuery('p1', '14')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 15</span>
-<button class="btn btn-copy" data-copy-target="p1-q15" onclick="copyQuery('p1', '15')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 16</span>
-<button class="btn btn-copy" data-copy-target="p1-q16" onclick="copyQuery('p1', '16')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 17</span>
-<button class="btn btn-copy" data-copy-target="p1-q17" onclick="copyQuery('p1', '17')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 18</span>
-<button class="btn btn-copy" data-copy-target="p1-q18" onclick="copyQuery('p1', '18')">Copy</button>
-</div>
-</div>
-<div id="codes-p1" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Create a Database" id="code-p1-q1">
-CREATE DATABASE labdb;
-</script>
-<script type="text/plain" data-num="2" data-label="Connect to the Database" id="code-p1-q2">
-\c labdb
-</script>
-<script type="text/plain" data-num="3" data-label="Create a User-Defined Type" id="code-p1-q3">
-CREATE TYPE Person AS ( first_name TEXT, last_name TEXT, age INT );
-</script>
-<script type="text/plain" data-num="4" data-label="Create a Function (Method)" id="code-p1-q4">
-CREATE OR REPLACE FUNCTION get_full_name(p Person) RETURNS TEXT AS $$
-BEGIN
-    RETURN p.first_name || ' ' || p.last_name;
-END;
-$$ LANGUAGE plpgsql;
-</script>
-<script type="text/plain" data-num="5" data-label="Create a Table using the Type" id="code-p1-q5">
-CREATE TABLE students ( id SERIAL PRIMARY KEY, info Person );
-</script>
-<script type="text/plain" data-num="6" data-label="Insert Data (Objects)" id="code-p1-q6">
-INSERT INTO students (info) VALUES
-(ROW('Rohit', 'Sharma', 23)),
-(ROW('Amit', 'Sharma', 22)),
-(ROW('Riya', 'Patel', 21)),
-(ROW('Sneha', 'Joshi', 25)),
-(ROW('Rahul', 'Kumar', 24)),
-(ROW('Ananya', 'Mehta', 22)),
-(ROW('Aditya', 'Gupta', 23)),
-(ROW('Tanya', 'Rao', 21)),
-(ROW('Karan', 'Singh', 24)),
-(ROW('Isha', 'Shah', 22));
-</script>
-<script type="text/plain" data-num="7" data-label="SELECT Queries - [1] Show all records" id="code-p1-q7">
-SELECT * FROM students s;
-</script>
-<script type="text/plain" data-num="8" data-label="[2] Access individual attributes" id="code-p1-q8">
-SELECT s.id, (s.info).first_name, (s.info).age FROM students s;
-</script>
-<script type="text/plain" data-num="9" data-label="[3] Use the function (method)" id="code-p1-q9">
-SELECT s.id, get_full_name(s.info) AS full_name FROM students s;
-</script>
-<script type="text/plain" data-num="10" data-label="[4] Conditional query" id="code-p1-q10">
-SELECT get_full_name(s.info), (s.info).age FROM students s WHERE (s.info).age > 23;
-</script>
-<script type="text/plain" data-num="11" data-label="UPDATE Queries - [1] Update single record" id="code-p1-q11">
-UPDATE students SET info = ROW((info).first_name, (info).last_name, 26) WHERE (info).first_name = 'Sneha';
-</script>
-<script type="text/plain" data-num="12" data-label="[2] Update multiple records" id="code-p1-q12">
-UPDATE students SET info = ROW((info).first_name, (info).last_name, (info).age + 1) WHERE (info).age < 23;
-</script>
-<script type="text/plain" data-num="13" data-label="DELETE Queries - [1] Delete one record" id="code-p1-q13">
-DELETE FROM students WHERE (info).first_name = 'Riya';
-</script>
-<script type="text/plain" data-num="14" data-label="[2] Delete multiple records" id="code-p1-q14">
-DELETE FROM students WHERE (info).age < 22;
-</script>
-<script type="text/plain" data-num="15" data-label="Advanced Queries - [1] Sort by age" id="code-p1-q15">
-SELECT get_full_name(s.info), (s.info).age FROM students s ORDER BY (s.info).age DESC;
-</script>
-<script type="text/plain" data-num="16" data-label="[2] Count students older than 23" id="code-p1-q16">
-SELECT COUNT(*) FROM students WHERE (info).age > 23;
-</script>
-<script type="text/plain" data-num="17" data-label="[3] Search by last name" id="code-p1-q17">
-SELECT get_full_name(s.info) FROM students s WHERE (s.info).last_name LIKE 'Sh%';
-</script>
-<script type="text/plain" data-num="18" data-label="[4] Limit results" id="code-p1-q18">
-SELECT get_full_name(s.info), (s.info).age FROM students s ORDER BY (s.info).age LIMIT 5;
-</script>
-</div>
-</section>
-<section id="page-p2" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 2</span>XML Database (BaseX)</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p2', this)">Copy All</button>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p2-q1" onclick="copyQuery('p2', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p2-q2" onclick="copyQuery('p2', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p2-q3" onclick="copyQuery('p2', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p2-q4" onclick="copyQuery('p2', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p2-q5" onclick="copyQuery('p2', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p2-q6" onclick="copyQuery('p2', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p2-q7" onclick="copyQuery('p2', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p2-q8" onclick="copyQuery('p2', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p2-q9" onclick="copyQuery('p2', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p2-q10" onclick="copyQuery('p2', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p2-q11" onclick="copyQuery('p2', '11')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 12</span>
-<button class="btn btn-copy" data-copy-target="p2-q12" onclick="copyQuery('p2', '12')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 13</span>
-<button class="btn btn-copy" data-copy-target="p2-q13" onclick="copyQuery('p2', '13')">Copy</button>
-</div>
-</div>
-<div id="codes-p2" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Create New Database with 10 Rows" id="code-p2-q1">
-CREATE DB students
-<students>
-<student id="1"><name>Mohan</name><age>23</age></student>
-<student id="2"><name>Akash</name><age>22</age></student>
-<student id="3"><name>Rohan</name><age>24</age></student>
-<student id="4"><name>Meena</name><age>21</age></student>
-<student id="5"><name>Sneha</name><age>25</age></student>
-<student id="6"><name>Vikas</name><age>25</age></student>
-<student id="7"><name>Anjali</name><age>22</age></student>
-<student id="8"><name>Rahul</name><age>24</age></student>
-<student id="9"><name>Neha</name><age>23</age></student>
-<student id="10"><name>Kiran</name><age>26</age></student>
-</students>
-</script>
-<script type="text/plain" data-num="2" data-label="Connect / Open Database" id="code-p2-q2">
-OPEN students
-</script>
-<script type="text/plain" data-num="3" data-label="Display All Data" id="code-p2-q3">
-XQUERY /students
-</script>
-<script type="text/plain" data-num="4" data-label="Insert New Row" id="code-p2-q4">
-XQUERY insert node <student id="11"> <name>Arjun</name> <age>20</age> </student> into /students
-</script>
-<script type="text/plain" data-num="5" data-label="Check" id="code-p2-q5">
-XQUERY /students
-</script>
-<script type="text/plain" data-num="6" data-label="Update Row (Change Age)" id="code-p2-q6">
-XQUERY replace value of node /students/student[@id="5"]/age with "24"
-</script>
-<script type="text/plain" data-num="7" data-label="Check" id="code-p2-q7">
-XQUERY /students/student[@id="5"]
-</script>
-<script type="text/plain" data-num="8" data-label="Delete Row" id="code-p2-q8">
-XQUERY delete node /students/student[@id="3"]
-</script>
-<script type="text/plain" data-num="9" data-label="Check" id="code-p2-q9">
-XQUERY /students
-</script>
-<script type="text/plain" data-num="10" data-label="Run Queries - [1] Get all names" id="code-p2-q10">
-XQUERY /students/student/name
-</script>
-<script type="text/plain" data-num="11" data-label="[2] Get students older than 23" id="code-p2-q11">
-XQUERY /students/student[age > 23]
-</script>
-<script type="text/plain" data-num="12" data-label="[3] Count total students" id="code-p2-q12">
-XQUERY count(/students/student)
-</script>
-<script type="text/plain" data-num="13" data-label="Close Database" id="code-p2-q13">
-CLOSE
-</script>
-</div>
-</section>
-<section id="page-p3" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 3</span>Temporal Database (PostgreSQL)</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p3', this)">Copy All</button>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p3-q1" onclick="copyQuery('p3', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p3-q2" onclick="copyQuery('p3', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p3-q3" onclick="copyQuery('p3', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p3-q4" onclick="copyQuery('p3', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p3-q5" onclick="copyQuery('p3', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p3-q6" onclick="copyQuery('p3', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p3-q7" onclick="copyQuery('p3', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p3-q8" onclick="copyQuery('p3', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p3-q9" onclick="copyQuery('p3', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p3-q10" onclick="copyQuery('p3', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p3-q11" onclick="copyQuery('p3', '11')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 12</span>
-<button class="btn btn-copy" data-copy-target="p3-q12" onclick="copyQuery('p3', '12')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 13</span>
-<button class="btn btn-copy" data-copy-target="p3-q13" onclick="copyQuery('p3', '13')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 14</span>
-<button class="btn btn-copy" data-copy-target="p3-q14" onclick="copyQuery('p3', '14')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 15</span>
-<button class="btn btn-copy" data-copy-target="p3-q15" onclick="copyQuery('p3', '15')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 16</span>
-<button class="btn btn-copy" data-copy-target="p3-q16" onclick="copyQuery('p3', '16')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 17</span>
-<button class="btn btn-copy" data-copy-target="p3-q17" onclick="copyQuery('p3', '17')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 18</span>
-<button class="btn btn-copy" data-copy-target="p3-q18" onclick="copyQuery('p3', '18')">Copy</button>
-</div>
-</div>
-<div id="codes-p3" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Check connection" id="code-p3-q1">
-\conninfo
-</script>
-<script type="text/plain" data-num="2" data-label="Create Database" id="code-p3-q2">
-CREATE DATABASE temporal_db;
-</script>
-<script type="text/plain" data-num="3" data-label="Connect to DB" id="code-p3-q3">
-\c temporal_db
-</script>
-<script type="text/plain" data-num="4" data-label="Create Table (Employees) - valid_from = record start date, valid_to = record end date" id="code-p3-q4">
-CREATE TABLE employees (
-    emp_id SERIAL PRIMARY KEY,
-    emp_name VARCHAR(50),
-    position VARCHAR(50),
-    salary NUMERIC(10,2),
-    valid_from DATE NOT NULL,
-    valid_to DATE NOT NULL
-);
-</script>
-<script type="text/plain" data-num="5" data-label="Insert 10 Employees" id="code-p3-q5">
-INSERT INTO employees (emp_name, position, salary, valid_from, valid_to) VALUES
-('Rahul Sharma', 'Developer', 50000, '2025-03-01', '2025-08-31'),
-('Rahul Sharma', 'Developer', 60000, '2025-09-01', '2025-12-31'),
-('Sneha Patil', 'Tester', 40000, '2025-03-15', '2025-10-15'),
-('Amit Joshi', 'Manager', 80000, '2025-03-01', '2025-06-30'),
-('Amit Joshi', 'Manager', 85000, '2025-07-01', '2025-12-31'),
-('Kiran Deshmukh', 'Developer', 52000, '2025-04-01', '2025-12-31'),
-('Meera Kulkarni', 'Tester', 42000, '2025-03-05', '2025-09-30'),
-('Meera Kulkarni', 'Tester', 45000, '2025-10-01', '2025-12-31'),
-('Vikram Rao', 'Developer', 55000, '2025-03-01', '2025-12-31'),
-('Anita Singh', 'HR', 45000, '2025-05-01', '2025-12-31');
-</script>
-<script type="text/plain" data-num="6" data-label="Check Data" id="code-p3-q6">
-SELECT * FROM employees ORDER BY emp_name, valid_from;
-</script>
-<script type="text/plain" data-num="7" data-label="Salary Updates (Temporal Update) - [1] Rahul Sharma: 50,000 -&gt; 60,000 from 2025-09-01" id="code-p3-q7">
-UPDATE employees SET valid_to = '2025-08-31' WHERE emp_name = 'Rahul Sharma' AND salary = 50000;
-</script>
-<script type="text/plain" data-num="8" data-label="[1] Rahul Sharma - Insert new record" id="code-p3-q8">
-INSERT INTO employees (emp_name, position, salary, valid_from, valid_to) VALUES ('Rahul Sharma', 'Developer', 60000, '2025-09-01', '2025-12-31');
-</script>
-<script type="text/plain" data-num="9" data-label="[2] Amit Joshi: 80,000 -&gt; 85,000 from 2025-07-01" id="code-p3-q9">
-UPDATE employees SET valid_to = '2025-06-30' WHERE emp_name = 'Amit Joshi' AND salary = 80000;
-</script>
-<script type="text/plain" data-num="10" data-label="[2] Amit Joshi - Insert new record" id="code-p3-q10">
-INSERT INTO employees (emp_name, position, salary, valid_from, valid_to) VALUES ('Amit Joshi', 'Manager', 85000, '2025-07-01', '2025-12-31');
-</script>
-<script type="text/plain" data-num="11" data-label="[3] Meera Kulkarni: 42,000 -&gt; 45,000 from 2025-10-01" id="code-p3-q11">
-UPDATE employees SET valid_to = '2025-09-30' WHERE emp_name = 'Meera Kulkarni' AND salary = 42000;
-</script>
-<script type="text/plain" data-num="12" data-label="[3] Meera Kulkarni - Insert new record" id="code-p3-q12">
-INSERT INTO employees (emp_name, position, salary, valid_from, valid_to) VALUES ('Meera Kulkarni', 'Tester', 45000, '2025-10-01', '2025-12-31');
-</script>
-<script type="text/plain" data-num="13" data-label="Expire Employee [Scenario: Sneha Patil leaves company on 2025-10-15]" id="code-p3-q13">
-UPDATE employees SET valid_to = '2025-10-15' WHERE emp_name = 'Sneha Patil';
-</script>
-<script type="text/plain" data-num="14" data-label="Queries - [1] All Employees" id="code-p3-q14">
-SELECT * FROM employees ORDER BY emp_name, valid_from;
-</script>
-<script type="text/plain" data-num="15" data-label="[2] Current Employees" id="code-p3-q15">
-SELECT * FROM employees WHERE '2025-09-25' BETWEEN valid_from AND valid_to ORDER BY emp_name;
-</script>
-<script type="text/plain" data-num="16" data-label="[3] Employee History - Rahul Sharma" id="code-p3-q16">
-SELECT * FROM employees WHERE emp_name = 'Rahul Sharma' ORDER BY valid_from;
-</script>
-<script type="text/plain" data-num="17" data-label="[4] Employees at Specific Date (2025-08-15)" id="code-p3-q17">
-SELECT * FROM employees WHERE '2025-08-15' BETWEEN valid_from AND valid_to ORDER BY emp_name;
-</script>
-<script type="text/plain" data-num="18" data-label="[5] All Salary Changes (History)" id="code-p3-q18">
-SELECT emp_name, position, salary, valid_from, valid_to FROM employees ORDER BY emp_name, valid_from;
-</script>
-</div>
-</section>
-<section id="page-p4_1" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 4.1</span>MongoDB - CRUD Operations</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p4_1', this)">Copy All</button>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q1" onclick="copyQuery('p4_1', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q2" onclick="copyQuery('p4_1', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q3" onclick="copyQuery('p4_1', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q4" onclick="copyQuery('p4_1', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q5" onclick="copyQuery('p4_1', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q6" onclick="copyQuery('p4_1', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q7" onclick="copyQuery('p4_1', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q8" onclick="copyQuery('p4_1', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q9" onclick="copyQuery('p4_1', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q10" onclick="copyQuery('p4_1', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q11" onclick="copyQuery('p4_1', '11')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 12</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q12" onclick="copyQuery('p4_1', '12')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 13</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q13" onclick="copyQuery('p4_1', '13')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 14</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q14" onclick="copyQuery('p4_1', '14')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 15</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q15" onclick="copyQuery('p4_1', '15')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 16</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q16" onclick="copyQuery('p4_1', '16')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 17</span>
-<button class="btn btn-copy" data-copy-target="p4_1-q17" onclick="copyQuery('p4_1', '17')">Copy</button>
-</div>
-</div>
-<div id="codes-p4_1" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Create &amp; Switch to a Database" id="code-p4_1-q1">
-use mycollege
-</script>
-<script type="text/plain" data-num="2" data-label="Check Current Database" id="code-p4_1-q2">
-db
-</script>
-<script type="text/plain" data-num="3" data-label="Create a Collection (Table Equivalent)" id="code-p4_1-q3">
-db.createCollection("students")
-</script>
-<script type="text/plain" data-num="4" data-label="Insert Records (CREATE)" id="code-p4_1-q4">
-db.students.insertMany([
-{ roll: 1, name: "Rohan", age: 23, course: "MSc CS" },
-{ roll: 2, name: "Shravani", age: 22, course: "BSc IT" },
-{ roll: 3, name: "Meera", age: 24, course: "MCA" },
-{ roll: 4, name: "Amit", age: 21, course: "BSc CS" },
-{ roll: 5, name: "Neha", age: 25, course: "MBA" },
-{ roll: 6, name: "Rohit", age: 23, course: "MSc Math" },
-{ roll: 7, name: "Pooja", age: 22, course: "MCom" },
-{ roll: 8, name: "Kiran", age: 24, course: "MSc CS" },
-{ roll: 9, name: "Sahil", age: 21, course: "BCA" },
-{ roll: 10, name: "Anjali", age: 23, course: "BSc IT" }
-]);
-</script>
-<script type="text/plain" data-num="5" data-label="View All Databases" id="code-p4_1-q5">
-show dbs
-</script>
-<script type="text/plain" data-num="6" data-label="View Collections in Current DB" id="code-p4_1-q6">
-show collections
-</script>
-<script type="text/plain" data-num="7" data-label="Read Data (READ) - [1] Show all" id="code-p4_1-q7">
-db.students.find()
-</script>
-<script type="text/plain" data-num="8" data-label="[2] Pretty format" id="code-p4_1-q8">
-db.students.find().pretty()
-</script>
-<script type="text/plain" data-num="9" data-label="[3] Filter (age &gt; 22)" id="code-p4_1-q9">
-db.students.find({ age: { $gt: 22 } })
-</script>
-<script type="text/plain" data-num="10" data-label="Update Data (UPDATE) - [1] Update single" id="code-p4_1-q10">
-db.students.updateOne( { roll: 1 }, { $set: { course: "AI & ML" } } )
-</script>
-<script type="text/plain" data-num="11" data-label="[2] Update multiple" id="code-p4_1-q11">
-db.students.updateMany( { age: 22 }, { $set: { course: "Data Science" } } )
-</script>
-<script type="text/plain" data-num="12" data-label="Delete Data (DELETE) - [1] Delete single" id="code-p4_1-q12">
-db.students.deleteOne({ roll: 10 })
-</script>
-<script type="text/plain" data-num="13" data-label="[2] Delete multiple" id="code-p4_1-q13">
-db.students.deleteMany({ age: { $lt: 23 } })
-</script>
-<script type="text/plain" data-num="14" data-label="Schema View (Describe Collection Equivalent)" id="code-p4_1-q14">
-db.students.findOne()
-</script>
-<script type="text/plain" data-num="15" data-label="Alter Table Equivalent (Add New Field)" id="code-p4_1-q15">
-db.students.updateMany( {}, { $set: { grade: "Pending" } } )
-</script>
-<script type="text/plain" data-num="16" data-label="Drop Collection (Drop Table Equivalent)" id="code-p4_1-q16">
-db.students.drop()
-</script>
-<script type="text/plain" data-num="17" data-label="Drop Database" id="code-p4_1-q17">
-db.dropDatabase()
-</script>
-</div>
-</section>
-<section id="page-p4_2" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 4.2</span>Redis - CRUD Operations</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p4_2', this)">Copy All</button>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q1" onclick="copyQuery('p4_2', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q2" onclick="copyQuery('p4_2', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q3" onclick="copyQuery('p4_2', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q4" onclick="copyQuery('p4_2', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q5" onclick="copyQuery('p4_2', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q6" onclick="copyQuery('p4_2', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q7" onclick="copyQuery('p4_2', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q8" onclick="copyQuery('p4_2', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q9" onclick="copyQuery('p4_2', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q10" onclick="copyQuery('p4_2', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p4_2-q11" onclick="copyQuery('p4_2', '11')">Copy</button>
-</div>
-</div>
-<div id="codes-p4_2" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Test if Redis is running" id="code-p4_2-q1">
-ping
-</script>
-<script type="text/plain" data-num="2" data-label="Redis has 16 databases (0-15). Default is 0" id="code-p4_2-q2">
-SELECT 1
-</script>
-<script type="text/plain" data-num="3" data-label="Create (SET) 10 records" id="code-p4_2-q3">
-SET student:1 '{"name":"Mohan","age":20,"course":"CS"}'
-SET student:2 '{"name":"Neha","age":21,"course":"IT"}'
-SET student:3 '{"name":"Rahul","age":22,"course":"CS"}'
-SET student:4 '{"name":"Sita","age":20,"course":"IT"}'
-SET student:5 '{"name":"Amit","age":23,"course":"CS"}'
-SET student:6 '{"name":"Priya","age":21,"course":"IT"}'
-SET student:7 '{"name":"Rohan","age":22,"course":"CS"}'
-SET student:8 '{"name":"Anita","age":23,"course":"IT"}'
-SET student:9 '{"name":"Vikas","age":24,"course":"CS"}'
-SET student:10 '{"name":"Tina","age":22,"course":"IT"}'
-</script>
-<script type="text/plain" data-num="4" data-label="Read (GET) records" id="code-p4_2-q4">
-GET student:1
-</script>
-<script type="text/plain" data-num="5" data-label="Read (GET) records" id="code-p4_2-q5">
-GET student:5
-</script>
-<script type="text/plain" data-num="6" data-label="Update a record" id="code-p4_2-q6">
-SET student:3 '{"name":"Rahul","age":23,"course":"CS"}'
-</script>
-<script type="text/plain" data-num="7" data-label="Check update" id="code-p4_2-q7">
-GET student:3
-</script>
-<script type="text/plain" data-num="8" data-label="Delete a record" id="code-p4_2-q8">
-DEL student:7
-</script>
-<script type="text/plain" data-num="9" data-label="Check all keys" id="code-p4_2-q9">
-KEYS *
-</script>
-<script type="text/plain" data-num="10" data-label="Delete all keys - Current DB only" id="code-p4_2-q10">
-FLUSHDB
-</script>
-<script type="text/plain" data-num="11" data-label="Delete all keys - All DBs" id="code-p4_2-q11">
-FLUSHALL
-</script>
-</div>
-</section>
-<section id="page-p5" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 5</span>Temporal Database (PostGIS Spatial Queries)</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p5', this)">Copy All</button>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p5-q1" onclick="copyQuery('p5', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p5-q2" onclick="copyQuery('p5', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p5-q3" onclick="copyQuery('p5', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p5-q4" onclick="copyQuery('p5', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p5-q7" onclick="copyQuery('p5', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p5-q8" onclick="copyQuery('p5', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p5-q9" onclick="copyQuery('p5', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p5-q10" onclick="copyQuery('p5', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p5-q11" onclick="copyQuery('p5', '11')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 12</span>
-<button class="btn btn-copy" data-copy-target="p5-q12" onclick="copyQuery('p5', '12')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 13</span>
-<button class="btn btn-copy" data-copy-target="p5-q13" onclick="copyQuery('p5', '13')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 14</span>
-<button class="btn btn-copy" data-copy-target="p5-q14" onclick="copyQuery('p5', '14')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 15</span>
-<button class="btn btn-copy" data-copy-target="p5-q15" onclick="copyQuery('p5', '15')">Copy</button>
-</div>
-</div>
-<div id="codes-p5" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Creation of DB and PostGIS user" id="code-p5-q1">
-CREATE USER gisuser WITH PASSWORD 'gis_pass';
-</script>
-<script type="text/plain" data-num="2" data-label="Create database" id="code-p5-q2">
-CREATE DATABASE gisdb OWNER gisuser;
-</script>
-<script type="text/plain" data-num="3" data-label="Connect to DB" id="code-p5-q3">
-\c gisdb
-</script>
-<script type="text/plain" data-num="4" data-label="Create extension" id="code-p5-q4">
-CREATE EXTENSION postgis;
-</script>
-<script type="text/plain" data-num="7" data-label="Create the table" id="code-p5-q7">
-CREATE TABLE places (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    geom GEOMETRY(Point, 4326)
-);
-</script>
-<script type="text/plain" data-num="8" data-label="Insert the records" id="code-p5-q8">
-INSERT INTO places (name, geom) VALUES
-('Mumbai', ST_GeomFromText('POINT(72.8777 19.0760)', 4326)),
-('Delhi', ST_GeomFromText('POINT(77.1025 28.7041)', 4326)),
-('Bengaluru', ST_GeomFromText('POINT(77.5946 12.9716)', 4326)),
-('Hyderabad', ST_GeomFromText('POINT(78.4867 17.3850)', 4326)),
-('Chennai', ST_GeomFromText('POINT(80.2707 13.0827)', 4326)),
-('Pune', ST_GeomFromText('POINT(73.8567 18.5204)', 4326)),
-('Kolkata', ST_GeomFromText('POINT(88.3639 22.5726)', 4326)),
-('Ahmedabad', ST_GeomFromText('POINT(72.5714 23.0225)', 4326)),
-('Jaipur', ST_GeomFromText('POINT(75.7873 26.9124)', 4326)),
-('Lucknow', ST_GeomFromText('POINT(80.9462 26.8467)', 4326));
-</script>
-<script type="text/plain" data-num="9" data-label="Read the data" id="code-p5-q9">
-SELECT * FROM places;
-</script>
-<script type="text/plain" data-num="10" data-label="Queries on Spatial Data - [1] Distance between 2 cities (in meters)" id="code-p5-q10">
-SELECT p1.name AS city1, p2.name AS city2, ST_Distance(p1.geom::geography, p2.geom::geography) AS distance_meters
-FROM places p1, places p2 WHERE p1.name = 'Mumbai' AND p2.name = 'Pune';
-</script>
-<script type="text/plain" data-num="11" data-label="Find distance from Mumbai in KM" id="code-p5-q11">
-SELECT name, ST_Distance( geom::geography, ST_SetSRID(ST_MakePoint(72.8777, 19.0760),4326)::geography ) / 1000 AS distance_km FROM places;
-</script>
-<script type="text/plain" data-num="12" data-label="Cities within 100 km radius" id="code-p5-q12">
-SELECT name FROM places WHERE ST_DWithin( geom::geography, ST_SetSRID(ST_MakePoint(72.8777,19.0760),4326)::geography, 100000 );
-</script>
-<script type="text/plain" data-num="13" data-label="Polygon Query" id="code-p5-q13">
-SELECT name FROM places WHERE ST_Intersects( geom, ST_GeomFromText( 'POLYGON((73.5 18.3, 74.2 18.3, 74.2 19.0, 73.5 19.0, 73.5 18.3))', 4326 ) );
-</script>
-<script type="text/plain" data-num="14" data-label="[2] List of cities within a given range" id="code-p5-q14">
-SELECT name FROM places WHERE ST_DWithin( geom::geography, ST_GeogFromText('SRID=4326;POINT(72.8777 19.0760)'), 300000 );
-</script>
-<script type="text/plain" data-num="15" data-label="[3] Nearest city" id="code-p5-q15">
-SELECT name, ST_Distance(geom::geography, ST_GeogFromText('SRID=4326;POINT(72.8777 19.0760)')) AS dist FROM places ORDER BY dist ASC LIMIT 1;
-</script>
-</div>
-</section>
-<section id="page-p6_1" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 6.1</span>HBase - CRUD Operations</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p6_1', this)">Copy All</button>
-</div>
-<div class="section-title">Docker Setup</div>
-<div class="queries">
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 1</span>
-<button class="btn btn-copy" data-copy-target="p6_1-d1" onclick="copyDocker('p6_1', '1')">Copy</button>
-</div>
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 2</span>
-<button class="btn btn-copy" data-copy-target="p6_1-d2" onclick="copyDocker('p6_1', '2')">Copy</button>
-</div>
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 3</span>
-<button class="btn btn-copy" data-copy-target="p6_1-d3" onclick="copyDocker('p6_1', '3')">Copy</button>
-</div>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q1" onclick="copyQuery('p6_1', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q2" onclick="copyQuery('p6_1', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q3" onclick="copyQuery('p6_1', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q4" onclick="copyQuery('p6_1', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q5" onclick="copyQuery('p6_1', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q6" onclick="copyQuery('p6_1', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q7" onclick="copyQuery('p6_1', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q8" onclick="copyQuery('p6_1', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q9" onclick="copyQuery('p6_1', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q10" onclick="copyQuery('p6_1', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q11" onclick="copyQuery('p6_1', '11')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 12</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q12" onclick="copyQuery('p6_1', '12')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 13</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q13" onclick="copyQuery('p6_1', '13')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 14</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q14" onclick="copyQuery('p6_1', '14')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 15</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q15" onclick="copyQuery('p6_1', '15')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 16</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q16" onclick="copyQuery('p6_1', '16')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 17</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q17" onclick="copyQuery('p6_1', '17')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 18</span>
-<button class="btn btn-copy" data-copy-target="p6_1-q18" onclick="copyQuery('p6_1', '18')">Copy</button>
-</div>
-</div>
-<div id="codes-p6_1" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Create db [namespace]" id="code-p6_1-q1">
-create_namespace 'college'
-</script>
-<script type="text/plain" data-num="2" data-label="See all namespaces" id="code-p6_1-q2">
-list_namespace
-</script>
-<script type="text/plain" data-num="3" data-label="Change the namespace" id="code-p6_1-q3">
-alter_namespace 'college', {METHOD => 'set', 'PROPERTY_NAME' => 'college'}
-</script>
-<script type="text/plain" data-num="4" data-label="Create the table in college namespace [info &amp; academic = column families]" id="code-p6_1-q4">
-create 'college:students', 'info', 'academic'
-</script>
-<script type="text/plain" data-num="5" data-label="See the table" id="code-p6_1-q5">
-list
-</script>
-<script type="text/plain" data-num="6" data-label="Insert the data in table" id="code-p6_1-q6">
-put 'college:students', '1', 'info:name', 'Pranay'
-put 'college:students', '1', 'info:gender', 'Male'
-put 'college:students', '1', 'academic:course', 'MScCS'
-put 'college:students', '1', 'academic:marks', '85'
-put 'college:students', '2', 'info:name', 'Riya'
-put 'college:students', '2', 'info:gender', 'Female'
-put 'college:students', '2', 'academic:course', 'BScIT'
-put 'college:students', '2', 'academic:marks', '78'
-put 'college:students', '3', 'info:name', 'Amit'
-put 'college:students', '3', 'info:gender', 'Male'
-put 'college:students', '3', 'academic:course', 'BScCS'
-put 'college:students', '3', 'academic:marks', '82'
-put 'college:students', '4', 'info:name', 'Sneha'
-put 'college:students', '4', 'info:gender', 'Female'
-put 'college:students', '4', 'academic:course', 'MScIT'
-put 'college:students', '4', 'academic:marks', '88'
-put 'college:students', '5', 'info:name', 'Rohit'
-put 'college:students', '5', 'info:gender', 'Male'
-put 'college:students', '5', 'academic:course', 'BCom'
-put 'college:students', '5', 'academic:marks', '75'
-put 'college:students', '6', 'info:name', 'Kiran'
-put 'college:students', '6', 'info:gender', 'Female'
-put 'college:students', '6', 'academic:course', 'MCA'
-put 'college:students', '6', 'academic:marks', '90'
-put 'college:students', '7', 'info:name', 'Nikhil'
-put 'college:students', '7', 'info:gender', 'Male'
-put 'college:students', '7', 'academic:course', 'MBA'
-put 'college:students', '7', 'academic:marks', '80'
-put 'college:students', '8', 'info:name', 'Pooja'
-put 'college:students', '8', 'info:gender', 'Female'
-put 'college:students', '8', 'academic:course', 'MScCS'
-put 'college:students', '8', 'academic:marks', '92'
-put 'college:students', '9', 'info:name', 'Raj'
-put 'college:students', '9', 'info:gender', 'Male'
-put 'college:students', '9', 'academic:course', 'BScIT'
-put 'college:students', '9', 'academic:marks', '70'
-put 'college:students', '10', 'info:name', 'Asha'
-put 'college:students', '10', 'info:gender', 'Female'
-put 'college:students', '10', 'academic:course', 'MCom'
-put 'college:students', '10', 'academic:marks', '88'
-</script>
-<script type="text/plain" data-num="7" data-label="To see all rows" id="code-p6_1-q7">
-scan 'college:students'
-</script>
-<script type="text/plain" data-num="8" data-label="To get specific row" id="code-p6_1-q8">
-get 'college:students', '3'
-</script>
-<script type="text/plain" data-num="9" data-label="To get specific column" id="code-p6_1-q9">
-get 'college:students', '3', 'academic:course'
-</script>
-<script type="text/plain" data-num="10" data-label="Update" id="code-p6_1-q10">
-put 'college:students', '3', 'academic:marks', '89'
-</script>
-<script type="text/plain" data-num="11" data-label="Delete" id="code-p6_1-q11">
-delete 'college:students', '5', 'academic:marks'
-</script>
-<script type="text/plain" data-num="12" data-label="To delete whole row" id="code-p6_1-q12">
-deleteall 'college:students', '5'
-</script>
-<script type="text/plain" data-num="13" data-label="Alter table - [1] add new column family" id="code-p6_1-q13">
-alter 'college:students', 'personal'
-</script>
-<script type="text/plain" data-num="14" data-label="[2] to see all column families" id="code-p6_1-q14">
-alter 'college:students', 'personal'
-</script>
-<script type="text/plain" data-num="15" data-label="[3] to delete column family" id="code-p6_1-q15">
-alter 'college:students', {NAME => 'personal', METHOD => 'delete'}
-</script>
-<script type="text/plain" data-num="16" data-label="To disable the table" id="code-p6_1-q16">
-disable 'college:students'
-</script>
-<script type="text/plain" data-num="17" data-label="To drop the table" id="code-p6_1-q17">
-drop 'college:students'
-</script>
-<script type="text/plain" data-num="18" data-label="To exit from HBase shell" id="code-p6_1-q18">
-exit
-</script>
-<script type="text/plain" data-num="1" data-label="Start HBase container" data-docker="1" id="code-p6_1-d1">
-docker run -d --name hbase -p 2181:2181 -p 16010:16010 -p 9090:9090 harisekhon/hbase
-</script>
-<script type="text/plain" data-num="2" data-label="Check container status" data-docker="1" id="code-p6_1-d2">
-docker ps
-</script>
-<script type="text/plain" data-num="3" data-label="Open HBase shell" data-docker="1" id="code-p6_1-d3">
-docker exec -it hbase hbase shell
-</script>
-</div>
-</section>
-<section id="page-p6_2" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 6.2</span>Apache Cassandra - CRUD Operations</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p6_2', this)">Copy All</button>
-</div>
-<div class="section-title">Docker Setup</div>
-<div class="queries">
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 1</span>
-<button class="btn btn-copy" data-copy-target="p6_2-d1" onclick="copyDocker('p6_2', '1')">Copy</button>
-</div>
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 2</span>
-<button class="btn btn-copy" data-copy-target="p6_2-d2" onclick="copyDocker('p6_2', '2')">Copy</button>
-</div>
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 3</span>
-<button class="btn btn-copy" data-copy-target="p6_2-d3" onclick="copyDocker('p6_2', '3')">Copy</button>
-</div>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q1" onclick="copyQuery('p6_2', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q2" onclick="copyQuery('p6_2', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q3" onclick="copyQuery('p6_2', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q4" onclick="copyQuery('p6_2', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q5" onclick="copyQuery('p6_2', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q6" onclick="copyQuery('p6_2', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q7" onclick="copyQuery('p6_2', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q8" onclick="copyQuery('p6_2', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q9" onclick="copyQuery('p6_2', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q10" onclick="copyQuery('p6_2', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q11" onclick="copyQuery('p6_2', '11')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 12</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q12" onclick="copyQuery('p6_2', '12')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 13</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q13" onclick="copyQuery('p6_2', '13')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 14</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q14" onclick="copyQuery('p6_2', '14')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 15</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q15" onclick="copyQuery('p6_2', '15')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 16</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q16" onclick="copyQuery('p6_2', '16')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 17</span>
-<button class="btn btn-copy" data-copy-target="p6_2-q17" onclick="copyQuery('p6_2', '17')">Copy</button>
-</div>
-</div>
-<div id="codes-p6_2" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Create keyspace" id="code-p6_2-q1">
-CREATE KEYSPACE mydb WITH replication = {'class':'SimpleStrategy', 'replication_factor':1};
-</script>
-<script type="text/plain" data-num="2" data-label="Use keyspace" id="code-p6_2-q2">
-USE mydb;
-</script>
-<script type="text/plain" data-num="3" data-label="Creation of table" id="code-p6_2-q3">
-CREATE TABLE students (
-    id int PRIMARY KEY,
-    name text,
-    age int,
-    grade text,
-    city text
-);
-</script>
-<script type="text/plain" data-num="4" data-label="Select Queries" id="code-p6_2-q4">
-SELECT * FROM students;
-</script>
-<script type="text/plain" data-num="5" data-label="Specific columns" id="code-p6_2-q5">
-SELECT name, grade FROM students;
-</script>
-<script type="text/plain" data-num="6" data-label="Using WHERE filter" id="code-p6_2-q6">
-SELECT * FROM students WHERE id = 3;
-</script>
-<script type="text/plain" data-num="7" data-label="Using ALLOW FILTERING" id="code-p6_2-q7">
-SELECT * FROM students WHERE grade = 'A' ALLOW FILTERING;
-</script>
-<script type="text/plain" data-num="8" data-label="Update" id="code-p6_2-q8">
-UPDATE students SET city = 'Bangalore' WHERE id = 2;
-</script>
-<script type="text/plain" data-num="9" data-label="Delete column" id="code-p6_2-q9">
-DELETE city FROM students WHERE id = 8;
-</script>
-<script type="text/plain" data-num="10" data-label="Delete row" id="code-p6_2-q10">
-DELETE FROM students WHERE id = 4;
-</script>
-<script type="text/plain" data-num="11" data-label="Count" id="code-p6_2-q11">
-SELECT COUNT(*) FROM students;
-</script>
-<script type="text/plain" data-num="12" data-label="Alter Table - Add column" id="code-p6_2-q12">
-ALTER TABLE students ADD email text;
-</script>
-<script type="text/plain" data-num="13" data-label="Alter Table - Drop column" id="code-p6_2-q13">
-ALTER TABLE students DROP email;
-</script>
-<script type="text/plain" data-num="14" data-label="Truncate (all data deletion only)" id="code-p6_2-q14">
-TRUNCATE students;
-</script>
-<script type="text/plain" data-num="15" data-label="Table delete" id="code-p6_2-q15">
-DROP TABLE students;
-</script>
-<script type="text/plain" data-num="16" data-label="Keyspace delete" id="code-p6_2-q16">
-DROP KEYSPACE mydb;
-</script>
-<script type="text/plain" data-num="17" data-label="Exit from shell" id="code-p6_2-q17">
-exit;
-</script>
-<script type="text/plain" data-num="1" data-label="Start Cassandra container" data-docker="1" id="code-p6_2-d1">
-docker run -d --name cassandra -p 9042:9042 cassandra
-</script>
-<script type="text/plain" data-num="2" data-label="Check container status" data-docker="1" id="code-p6_2-d2">
-docker ps
-</script>
-<script type="text/plain" data-num="3" data-label="Open CQL shell" data-docker="1" id="code-p6_2-d3">
-docker exec -it cassandra cqlsh
-</script>
-</div>
-</section>
-<section id="page-p7" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 7</span>MapReduce Functions (MongoDB)</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p7', this)">Copy All</button>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p7-q1" onclick="copyQuery('p7', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p7-q2" onclick="copyQuery('p7', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p7-q3" onclick="copyQuery('p7', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p7-q4" onclick="copyQuery('p7', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p7-q5" onclick="copyQuery('p7', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p7-q6" onclick="copyQuery('p7', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p7-q7" onclick="copyQuery('p7', '7')">Copy</button>
-</div>
-</div>
-<div id="codes-p7" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Create and Switch DB" id="code-p7-q1">
-use surveyDB
-</script>
-<script type="text/plain" data-num="2" data-label="Insert Respondents Data" id="code-p7-q2">
-db.respondents.insertMany ([
-{ name: "Aarav", gender: "M", city: "Mumbai" },
-{ name: "Simran", gender: "F", city: "Delhi" },
-{ name: "Rohit", gender: "M", city: "Delhi" },
-{ name: "Neha", gender: "F", city: "Pune" },
-{ name: "Kiran", gender: "M", city: "Pune" },
-{ name: "Pooja", gender: "F", city: "Mumbai" },
-{ name: "Rahul", gender: "M", city: "Mumbai" },
-{ name: "Aisha", gender: "F", city: "Mumbai" },
-{ name: "Vikas", gender: "M", city: "Delhi" },
-{ name: "Meena", gender: "F", city: "Delhi" },
-{ name: "Suresh", gender: "M", city: "Pune" },
-{ name: "Sneha", gender: "F", city: "Pune" },
-{ name: "Aditya", gender: "M", city: "Nagpur" },
-{ name: "Priya", gender: "F", city: "Nagpur" },
-{ name: "Manoj", gender: "M", city: "Pune" },
-{ name: "Riya", gender: "F", city: "Delhi" },
-{ name: "Amit", gender: "M", city: "Mumbai" },
-{ name: "Shreya", gender: "F", city: "Pune" }
-])
-</script>
-<script type="text/plain" data-num="3" data-label="Verify the Data" id="code-p7-q3">
-db.respondents.find().limit(5).pretty()
-</script>
-<script type="text/plain" data-num="4" data-label="Write Map Function" id="code-p7-q4">
-var mapFunction = function() { emit({ city: this.city, gender: this.gender }, 1); };
-</script>
-<script type="text/plain" data-num="5" data-label="Write Reduce Function" id="code-p7-q5">
-var reduceFunction = function(key, values) { return Array.sum(values); };
-</script>
-<script type="text/plain" data-num="6" data-label="MapReduce Operation" id="code-p7-q6">
-db.respondents.mapReduce( mapFunction, reduceFunction, { out: "city_gender_count" } )
-</script>
-<script type="text/plain" data-num="7" data-label="View the Output collection" id="code-p7-q7">
-db.city_gender_count.find().pretty()
-</script>
-</div>
-</section>
-<section id="page-p8_1" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 8.1</span>Indexing and Ordering Operations (MongoDB)</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p8_1', this)">Copy All</button>
-</div>
-<div class="section-title">Docker Setup</div>
-<div class="queries">
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 1</span>
-<button class="btn btn-copy" data-copy-target="p8_1-d1" onclick="copyDocker('p8_1', '1')">Copy</button>
-</div>
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 2</span>
-<button class="btn btn-copy" data-copy-target="p8_1-d2" onclick="copyDocker('p8_1', '2')">Copy</button>
-</div>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q1" onclick="copyQuery('p8_1', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q2" onclick="copyQuery('p8_1', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q3" onclick="copyQuery('p8_1', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q4" onclick="copyQuery('p8_1', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q5" onclick="copyQuery('p8_1', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q6" onclick="copyQuery('p8_1', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q7" onclick="copyQuery('p8_1', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q8" onclick="copyQuery('p8_1', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q9" onclick="copyQuery('p8_1', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q10" onclick="copyQuery('p8_1', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p8_1-q11" onclick="copyQuery('p8_1', '11')">Copy</button>
-</div>
-</div>
-<div id="codes-p8_1" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Create and Switch Database" id="code-p8_1-q1">
-use companyDB
-</script>
-<script type="text/plain" data-num="2" data-label="Create Collection and Insert Records" id="code-p8_1-q2">
-db.employees.insertMany([
-{ emp_id: 101, name: "Aarav", age: 25, department: "IT", salary: 60000 },
-{ emp_id: 102, name: "Simran", age: 30, department: "HR", salary: 55000 },
-{ emp_id: 103, name: "Karan", age: 28, department: "Finance", salary: 65000 },
-{ emp_id: 104, name: "Riya", age: 26, department: "IT", salary: 70000 },
-{ emp_id: 105, name: "Vikram", age: 35, department: "Admin", salary: 50000 },
-{ emp_id: 106, name: "Neha", age: 27, department: "Finance", salary: 72000 },
-{ emp_id: 107, name: "Raj", age: 24, department: "IT", salary: 61000 },
-{ emp_id: 108, name: "Anjali", age: 29, department: "HR", salary: 58000 },
-{ emp_id: 109, name: "Pratik", age: 31, department: "Finance", salary: 67000 },
-{ emp_id: 110, name: "Meera", age: 33, department: "Admin", salary: 53000 }
-])
-</script>
-<script type="text/plain" data-num="3" data-label="Display All Records" id="code-p8_1-q3">
-db.employees.find().pretty()
-</script>
-<script type="text/plain" data-num="4" data-label="Create Index on Salary" id="code-p8_1-q4">
-db.employees.createIndex({ salary: 1 })
-</script>
-<script type="text/plain" data-num="5" data-label="View Existing Indexes" id="code-p8_1-q5">
-db.employees.getIndexes()
-</script>
-<script type="text/plain" data-num="6" data-label="Ordering (Sorting) - [1] Ascending Order (Lowest to Highest Salary)" id="code-p8_1-q6">
-db.employees.find().sort({ salary: 1 })
-</script>
-<script type="text/plain" data-num="7" data-label="[2] Descending Order (Highest to Lowest Salary)" id="code-p8_1-q7">
-db.employees.find().sort({ salary: -1 })
-</script>
-<script type="text/plain" data-num="8" data-label="Create Compound Index (Multiple Fields)" id="code-p8_1-q8">
-db.employees.createIndex({ department: 1, salary: -1 })
-</script>
-<script type="text/plain" data-num="9" data-label="Check Again" id="code-p8_1-q9">
-db.employees.getIndexes()
-</script>
-<script type="text/plain" data-num="10" data-label="Query Using Index" id="code-p8_1-q10">
-db.employees.find({ department: "IT" }).sort({ salary: -1 })
-</script>
-<script type="text/plain" data-num="11" data-label="Drop Index" id="code-p8_1-q11">
-db.employees.dropIndex("salary_1")
-</script>
-<script type="text/plain" data-num="1" data-label="Start MongoDB container" data-docker="1" id="code-p8_1-d1">
-docker run -d --name mongoDB -p 27017:27017 mongo
-</script>
-<script type="text/plain" data-num="2" data-label="Open MongoDB shell" data-docker="1" id="code-p8_1-d2">
-docker exec -it mongoDB mongosh
-</script>
-</div>
-</section>
-<section id="page-p8_2" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 8.2</span>Indexing And Ordering Operations (Apache Cassandra)</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p8_2', this)">Copy All</button>
-</div>
-<div class="section-title">Docker Setup</div>
-<div class="queries">
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 1</span>
-<button class="btn btn-copy" data-copy-target="p8_2-d1" onclick="copyDocker('p8_2', '1')">Copy</button>
-</div>
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 2</span>
-<button class="btn btn-copy" data-copy-target="p8_2-d2" onclick="copyDocker('p8_2', '2')">Copy</button>
-</div>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q1" onclick="copyQuery('p8_2', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q2" onclick="copyQuery('p8_2', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q3" onclick="copyQuery('p8_2', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q4" onclick="copyQuery('p8_2', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q5" onclick="copyQuery('p8_2', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q6" onclick="copyQuery('p8_2', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q7" onclick="copyQuery('p8_2', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q8" onclick="copyQuery('p8_2', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q9" onclick="copyQuery('p8_2', '9')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 10</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q10" onclick="copyQuery('p8_2', '10')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 11</span>
-<button class="btn btn-copy" data-copy-target="p8_2-q11" onclick="copyQuery('p8_2', '11')">Copy</button>
-</div>
-</div>
-<div id="codes-p8_2" style="display:none;">
-<script type="text/plain" data-num="1" data-label="Create and Switch to Keyspace" id="code-p8_2-q1">
-CREATE KEYSPACE collegeDB WITH replication ={'class' : 'SimpleStrategy', 'replication_factor': 1};
-USE collegeDB;
-</script>
-<script type="text/plain" data-num="2" data-label="Create Table" id="code-p8_2-q2">
-CREATE TABLE students (
-    roll_no int PRIMARY KEY,
-    name text,
-    city text,
-    marks int
-);
-</script>
-<script type="text/plain" data-num="3" data-label="Insert Multiple Records" id="code-p8_2-q3">
-INSERT INTO students (roll_no, name, city, marks) VALUES (1, 'Aarav', 'Mumbai', 85);
-INSERT INTO students (roll_no, name, city, marks) VALUES (2, 'Simran', 'Pune', 92);
-INSERT INTO students (roll_no, name, city, marks) VALUES (3, 'Rohan', 'Nashik', 78);
-INSERT INTO students (roll_no, name, city, marks) VALUES (4, 'Priya', 'Mumbai', 88);
-INSERT INTO students (roll_no, name, city, marks) VALUES (5, 'Neha', 'Pune', 95);
-INSERT INTO students (roll_no, name, city, marks) VALUES (6, 'Raj', 'Thane', 81);
-INSERT INTO students (roll_no, name, city, marks) VALUES (7, 'Karan', 'Pune', 90);
-INSERT INTO students (roll_no, name, city, marks) VALUES (8, 'Isha', 'Nashik', 83);
-INSERT INTO students (roll_no, name, city, marks) VALUES (9, 'Anaya', 'Mumbai', 76);
-INSERT INTO students (roll_no, name, city, marks) VALUES (10, 'Yash', 'Pune', 89);
-INSERT INTO students (roll_no, name, city, marks) VALUES (11, 'Dev', 'Thane', 84);
-INSERT INTO students (roll_no, name, city, marks) VALUES (12, 'Meera', 'Pune', 91);
-INSERT INTO students (roll_no, name, city, marks) VALUES (13, 'Riya', 'Nashik', 80);
-INSERT INTO students (roll_no, name, city, marks) VALUES (14, 'Kabir', 'Mumbai', 82);
-INSERT INTO students (roll_no, name, city, marks) VALUES (15, 'Sahil', 'Pune', 87);
-INSERT INTO students (roll_no, name, city, marks) VALUES (16, 'Tara', 'Nashik', 77);
-INSERT INTO students (roll_no, name, city, marks) VALUES (17, 'Nikhil', 'Mumbai', 93);
-INSERT INTO students (roll_no, name, city, marks) VALUES (18, 'Aditi', 'Pune', 86);
-INSERT INTO students (roll_no, name, city, marks) VALUES (19, 'Omkar', 'Thane', 79);
-INSERT INTO students (roll_no, name, city, marks) VALUES (20, 'Sneha', 'Mumbai', 94);
-</script>
-<script type="text/plain" data-num="4" data-label="Display All Records" id="code-p8_2-q4">
-SELECT * FROM students;
-</script>
-<script type="text/plain" data-num="5" data-label="Create Index on City" id="code-p8_2-q5">
-CREATE INDEX city_index ON students (city);
-</script>
-<script type="text/plain" data-num="6" data-label="View Existing Indexes" id="code-p8_2-q6">
-SELECT * FROM system_schema.indexes WHERE table_name = 'students' ALLOW FILTERING;
-</script>
-<script type="text/plain" data-num="7" data-label="Query Using Index (Find Students from Mumbai)" id="code-p8_2-q7">
-SELECT * FROM students WHERE city = 'Mumbai';
-</script>
-<script type="text/plain" data-num="8" data-label="Create New Table with Clustering Key for Ordering" id="code-p8_2-q8">
-CREATE TABLE student_marks (city text, roll_no int, name text, marks int, PRIMARY KEY (city, marks) ) WITH CLUSTERING ORDER BY (marks DESC);
-</script>
-<script type="text/plain" data-num="9" data-label="Insert Multiple Records" id="code-p8_2-q9">
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Mumbai', 1, 'Aarav', 85);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Mumbai', 4, 'Priya', 88);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Mumbai', 6, 'Rahul', 91);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Mumbai', 17, 'Nikhil', 93);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Mumbai', 20, 'Sneha', 94);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Pune', 2, 'Simran', 92);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Pune', 5, 'Neha', 95);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Pune', 7, 'Karan', 90);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Pune', 10, 'Yash', 89);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Pune', 12, 'Meera', 91);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Pune', 15, 'Sahil', 87);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Pune', 18, 'Aditi', 86);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Nashik', 3, 'Rohan', 78);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Nashik', 8, 'Isha', 83);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Nashik', 13, 'Riya', 80);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Nashik', 16, 'Tara', 77);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Thane', 6, 'Raj', 81);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Thane', 11, 'Dev', 84);
-INSERT INTO student_marks (city, roll_no, name, marks) VALUES ('Thane', 19, 'Omkar', 79);
-</script>
-<script type="text/plain" data-num="10" data-label="Display All Records" id="code-p8_2-q10">
-SELECT * FROM student_marks;
-</script>
-<script type="text/plain" data-num="11" data-label="Perform Ordering (Automatically in DESC due to Clustering Key)" id="code-p8_2-q11">
-SELECT * FROM student_marks WHERE city = 'Mumbai';
-</script>
-<script type="text/plain" data-num="1" data-label="Start Cassandra container" data-docker="1" id="code-p8_2-d1">
-docker run -d --name cassandraDB -p 9042:9042 cassandra
-</script>
-<script type="text/plain" data-num="2" data-label="Open CQL shell" data-docker="1" id="code-p8_2-d2">
-docker exec -it cassandraDB cqlsh
-</script>
-</div>
-</section>
-<section id="page-p8_3" class="page">
-<div class="practical-header">
-<h2><span class="pnum">Practical 8.3</span>Indexing And Ordering Operations (CouchDB)</h2>
-<button class="btn btn-copy-all" onclick="copyAll('p8_3', this)">Copy All</button>
-</div>
-<div class="section-title">Docker Setup</div>
-<div class="queries">
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 1</span>
-<button class="btn btn-copy" data-copy-target="p8_3-d1" onclick="copyDocker('p8_3', '1')">Copy</button>
-</div>
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 2</span>
-<button class="btn btn-copy" data-copy-target="p8_3-d2" onclick="copyDocker('p8_3', '2')">Copy</button>
-</div>
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 3</span>
-<button class="btn btn-copy" data-copy-target="p8_3-d3" onclick="copyDocker('p8_3', '3')">Copy</button>
-</div>
-<div class="query-block docker-block">
-<span class="query-badge docker-badge">Docker 4</span>
-<button class="btn btn-copy" data-copy-target="p8_3-d4" onclick="copyDocker('p8_3', '4')">Copy</button>
-</div>
-</div>
-<div class="section-title">Queries</div>
-<div class="queries multi">
-<div class="query-block">
-<span class="query-badge">Query 0</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q0" onclick="copyQuery('p8_3', '0')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 1</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q1" onclick="copyQuery('p8_3', '1')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 2</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q2" onclick="copyQuery('p8_3', '2')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 3</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q3" onclick="copyQuery('p8_3', '3')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 4</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q4" onclick="copyQuery('p8_3', '4')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 5</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q5" onclick="copyQuery('p8_3', '5')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 6</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q6" onclick="copyQuery('p8_3', '6')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 7</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q7" onclick="copyQuery('p8_3', '7')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 8</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q8" onclick="copyQuery('p8_3', '8')">Copy</button>
-</div>
-<div class="query-block">
-<span class="query-badge">Query 9</span>
-<button class="btn btn-copy" data-copy-target="p8_3-q9" onclick="copyQuery('p8_3', '9')">Copy</button>
-</div>
-</div>
-<div id="codes-p8_3" style="display:none;">
-<script type="text/plain" data-num="0" data-label="Create Database" id="code-p8_3-q0">
-curl.exe -X PUT http://admin:admin@localhost:5984/collegedb
-</script>
-<script type="text/plain" data-num="1" data-label="Insert Multiple Records" id="code-p8_3-q1">
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":1,\"name\":\"Aarav\",\"city\":\"Mumbai\",\"marks\":85}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":2,\"name\":\"Simran\",\"city\":\"Pune\",\"marks\":92}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":3,\"name\":\"Rohan\",\"city\":\"Nashik\",\"marks\":78}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":4,\"name\":\"Priya\",\"city\":\"Mumbai\",\"marks\":88}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":5,\"name\":\"Neha\",\"city\":\"Pune\",\"marks\":95}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":6,\"name\":\"Raj\",\"city\":\"Thane\",\"marks\":81}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":7,\"name\":\"Karan\",\"city\":\"Pune\",\"marks\":90}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":8,\"name\":\"Isha\",\"city\":\"Nashik\",\"marks\":83}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":9,\"name\":\"Anaya\",\"city\":\"Mumbai\",\"marks\":76}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":10,\"name\":\"Yash\",\"city\":\"Pune\",\"marks\":89}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":11,\"name\":\"Dev\",\"city\":\"Thane\",\"marks\":84}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":12,\"name\":\"Meera\",\"city\":\"Pune\",\"marks\":91}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":13,\"name\":\"Riya\",\"city\":\"Nashik\",\"marks\":80}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":14,\"name\":\"Kabir\",\"city\":\"Mumbai\",\"marks\":82}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":15,\"name\":\"Sahil\",\"city\":\"Pune\",\"marks\":87}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":16,\"name\":\"Tara\",\"city\":\"Nashik\",\"marks\":77}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":17,\"name\":\"Nikhil\",\"city\":\"Mumbai\",\"marks\":93}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":18,\"name\":\"Aditi\",\"city\":\"Pune\",\"marks\":86}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":19,\"name\":\"Omkar\",\"city\":\"Thane\",\"marks\":79}"
-curl -X POST http://admin:admin@localhost:5984/collegedb -H "Content-Type: application/json" -d "{\"roll_no\":20,\"name\":\"Sneha\",\"city\":\"Mumbai\",\"marks\":94}"
-</script>
-<script type="text/plain" data-num="2" data-label="Display All Records" id="code-p8_3-q2">
-curl -X POST http://admin:admin@localhost:5984/collegedb/_find -H "Content-Type: application/json" -d "{\"selector\":{}}"
-</script>
-<script type="text/plain" data-num="3" data-label="Create Index on City" id="code-p8_3-q3">
-curl -X POST http://admin:admin@localhost:5984/collegedb/_index -H "Content-Type: application/json" -d "{\"index\":{\"fields\":[\"city\"]},\"name\":\"city_index\",\"type\":\"json\"}"
-</script>
-<script type="text/plain" data-num="4" data-label="View Existing Indexes" id="code-p8_3-q4">
-curl -X GET http://admin:admin@localhost:5984/collegedb/_index
-</script>
-<script type="text/plain" data-num="5" data-label="Query Using Index (Find Students from Mumbai)" id="code-p8_3-q5">
-curl -X POST http://admin:admin@localhost:5984/collegedb/_find -H "Content-Type: application/json" -d "{\"selector\":{\"city\":\"Mumbai\"},\"use_index\":\"city_index\"}"
-</script>
-<script type="text/plain" data-num="6" data-label="Create New Index for Ordering" id="code-p8_3-q6">
-curl -X POST http://admin:admin@localhost:5984/collegedb/_index -H "Content-Type: application/json" -d "{\"index\":{\"fields\":[{\"marks\":\"desc\"}]},\"name\":\"marks_desc_index\",\"type\":\"json\"}"
-</script>
-<script type="text/plain" data-num="7" data-label="Perform Ordering in Descending Order" id="code-p8_3-q7">
-curl -X POST http://admin:admin@localhost:5984/collegedb/_find -H "Content-Type: application/json" -d "{\"selector\":{\"marks\":{\"$gte\":0}},\"sort\":[{\"marks\":\"desc\"}],\"use_index\":\"marks_desc_index\"}"
-</script>
-<script type="text/plain" data-num="8" data-label="Create Index for Ascending Ordering" id="code-p8_3-q8">
-curl -X POST http://admin:admin@localhost:5984/collegedb/_index -H "Content-Type: application/json" -d "{\"index\":{\"fields\":[{\"marks\":\"asc\"}]},\"name\":\"marks_asc_index\",\"type\":\"json\"}"
-</script>
-<script type="text/plain" data-num="9" data-label="Verify Ascending Ordering" id="code-p8_3-q9">
-curl -X POST http://admin:admin@localhost:5984/collegedb/_find -H "Content-Type: application/json" -d "{\"selector\":{\"marks\":{\"$gte\":0}},\"sort\":[{\"marks\":\"asc\"}],\"use_index\":\"marks_asc_index\"}"
-</script>
-<script type="text/plain" data-num="1" data-label="Start CouchDB container" data-docker="1" id="code-p8_3-d1">
-docker run -d --name couchdbDB -p 5984:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=admin couchdb
-</script>
-<script type="text/plain" data-num="2" data-label="Check container status" data-docker="1" id="code-p8_3-d2">
-docker ps
-</script>
-<script type="text/plain" data-num="3" data-label="Check CouchDB status" data-docker="1" id="code-p8_3-d3">
-curl http://localhost:5984/
-</script>
-<script type="text/plain" data-num="4" data-label="Open Fauxton in browser" data-docker="1" id="code-p8_3-d4">
-http://localhost:5984/_utils/
-</script>
-</div>
-</section>
-</main>
-<script>
-// ===== Page Navigation =====
-function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + pageId).classList.add('active');
-    document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
-    const chip = document.querySelector('.chip[data-target="' + pageId + '"]');
-    if (chip) {
-        chip.classList.add('active');
-        // Scroll the active chip into view in the navbar
-        chip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+    <h1>Image Processing Practicals</h1>
 
-// ===== Copy to Clipboard =====
-function copyToClipboard(text, btnElement) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function() {
-            showCopiedState(btnElement);
-        }).catch(function() {
-            fallbackCopy(text, btnElement);
-        });
-    } else {
-        fallbackCopy(text, btnElement);
-    }
-}
+    <table>
+        <tr>
+            <th>Practical Name</th>
+            <th>Copy</th>
+        </tr>
+        <tr>
+            <td class="name">Practical 1 - Point/Pixel Intensity Transformations</td>
+            <td class="btn"><button onclick="copyCode('code1', this)">Copy</button></td>
+        </tr>
+        <tr>
+            <td class="name">Practical 2 - Histogram Equalization</td>
+            <td class="btn"><button onclick="copyCode('code2', this)">Copy</button></td>
+        </tr>
+        <tr>
+            <td class="name">Practical 3 - Linear and Non-linear Noise Smoothing</td>
+            <td class="btn"><button onclick="copyCode('code3', this)">Copy</button></td>
+        </tr>
+        <tr>
+            <td class="name">Practical 4 - Image Enhancement using Smoothing Filters</td>
+            <td class="btn"><button onclick="copyCode('code4', this)">Copy</button></td>
+        </tr>
+        <tr>
+            <td class="name">Practical 5 - Sharpening and Unsharp Masking</td>
+            <td class="btn"><button onclick="copyCode('code5', this)">Copy</button></td>
+        </tr>
+        <tr>
+            <td class="name">Practical 6 - Edge Detection</td>
+            <td class="btn"><button onclick="copyCode('code6', this)">Copy</button></td>
+        </tr>
+        <tr>
+            <td class="name">Practical 7 - Morphological Operations on Binary Images</td>
+            <td class="btn"><button onclick="copyCode('code7', this)">Copy</button></td>
+        </tr>
+        <tr>
+            <td class="name">Practical 8 - Morphological Operations on Grayscale Images</td>
+            <td class="btn"><button onclick="copyCode('code8', this)">Copy</button></td>
+        </tr>
+        <tr>
+            <td class="name">Practical 9 - Gradient and Laplacian Operations</td>
+            <td class="btn"><button onclick="copyCode('code9', this)">Copy</button></td>
+        </tr>
+        <tr>
+            <td class="name">Practical 10 - Shape/Object Detection and Segmentation</td>
+            <td class="btn"><button onclick="copyCode('code10', this)">Copy</button></td>
+        </tr>
+    </table>
 
-function fallbackCopy(text, btnElement) {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.left = '-9999px';
-    document.body.appendChild(ta);
-    ta.select();
-    try {
-        document.execCommand('copy');
-        showCopiedState(btnElement);
-    } catch (e) {
-        showToast('Copy failed!');
-    }
-    document.body.removeChild(ta);
-}
+    <textarea id="code1" style="display:none;">import cv2
+import numpy as np
+import matplotlib.pyplot as plt
 
-function showCopiedState(btn) {
-    if (!btn) { showToast('Copied to clipboard!'); return; }
-    const original = btn.textContent;
-    btn.classList.add('copied');
-    btn.textContent = 'Copied!';
-    showToast('Copied to clipboard!');
-    setTimeout(function() {
-        btn.classList.remove('copied');
-        btn.textContent = original;
-    }, 2000);
-}
+img = cv2.imread('image.jpg', 0)
 
-// ===== Copy Single Query =====
-function copyQuery(practicalId, queryNum) {
-    const el = document.getElementById('code-' + practicalId + '-q' + queryNum);
-    if (!el) return;
-    const text = el.textContent;
-    const btn = document.querySelector('[data-copy-target="' + practicalId + '-q' + queryNum + '"]');
-    copyToClipboard(text, btn);
-}
+c = 255 / np.log(1 + np.max(img))
+log_transformed = c * np.log(1 + img)
+log_transformed = np.array(log_transformed, dtype=np.uint8)
 
-// ===== Copy Single Docker Command =====
-function copyDocker(practicalId, dockerNum) {
-    const el = document.getElementById('code-' + practicalId + '-d' + dockerNum);
-    if (!el) return;
-    const text = el.textContent;
-    const btn = document.querySelector('[data-copy-target="' + practicalId + '-d' + dockerNum + '"]');
-    copyToClipboard(text, btn);
-}
+gamma = 0.5
+gamma_corrected = np.array(255 * (img / 255) ** gamma, dtype=np.uint8)
 
-// ===== Copy All Queries (and Docker) of a Practical =====
-function copyAll(practicalId, btnElement) {
-    const container = document.getElementById('codes-' + practicalId);
-    if (!container) return;
-    const codeEls = container.querySelectorAll('script[type="text/plain"]');
-    let allCode = [];
-    codeEls.forEach(function(el) {
-        allCode.push(el.textContent);
-    });
-    const fullText = allCode.join('\n\n');
-    copyToClipboard(fullText, btnElement);
-}
+alpha = 1.5
+beta = 50
+contrast_adjusted = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
 
-// ===== Toast Notification =====
-let toastTimer = null;
-function showToast(msg) {
-    let toast = document.getElementById('toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'toast';
-        toast.className = 'toast';
-        document.body.appendChild(toast);
-    }
-    toast.textContent = msg;
-    toast.classList.add('show');
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function() {
-        toast.classList.remove('show');
-    }, 2000);
-}
+titles = ['Original', 'Log Transform', 'Gamma Correction', 'Contrast Adjusted']
+images = [img, log_transformed, gamma_corrected, contrast_adjusted]
 
-// ===== Home Page Filter =====
-function filterHome() {
-    const term = document.getElementById('homeFilter').value.toLowerCase();
-    document.querySelectorAll('.practical-card').forEach(function(card) {
-        const text = card.textContent.toLowerCase();
-        card.style.display = text.indexOf(term) !== -1 ? '' : 'none';
-    });
-}
+for i in range(4):
+    plt.subplot(2, 2, i + 1)
+    plt.imshow(images[i], cmap='gray')
+    plt.title(titles[i])
+    plt.axis('off')
+plt.show()</textarea>
 
-// ===== Init =====
-document.addEventListener('DOMContentLoaded', function() {
-    showPage('home');
-});
-</script>
+    <textarea id="code2" style="display:none;">import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread('image.jpg', 0)
+hist_eq = cv2.equalizeHist(img)
+
+plt.subplot(1, 2, 1)
+plt.imshow(img, cmap='gray')
+plt.title('Original')
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.imshow(hist_eq, cmap='gray')
+plt.title('Histogram Equalized')
+plt.axis('off')
+plt.show()</textarea>
+
+    <textarea id="code3" style="display:none;">import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread('noisy_image.jpg', 0)
+
+linear_smooth = cv2.blur(img, (5, 5))
+nonlinear_smooth = cv2.medianBlur(img, 5)
+
+plt.subplot(1, 3, 1)
+plt.imshow(img, cmap='gray')
+plt.title('Original')
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.imshow(linear_smooth, cmap='gray')
+plt.title('Linear Smoothing')
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.imshow(nonlinear_smooth, cmap='gray')
+plt.title('Non-linear Smoothing')
+plt.axis('off')
+plt.show()</textarea>
+
+    <textarea id="code4" style="display:none;">import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread('image.jpg', 0)
+
+gaussian = cv2.GaussianBlur(img, (5, 5), 0)
+bilateral = cv2.bilateralFilter(img, 9, 75, 75)
+
+plt.subplot(1, 3, 1)
+plt.imshow(img, cmap='gray')
+plt.title('Original')
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.imshow(gaussian, cmap='gray')
+plt.title('Gaussian Smoothing')
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.imshow(bilateral, cmap='gray')
+plt.title('Bilateral Smoothing')
+plt.axis('off')
+plt.show()</textarea>
+
+    <textarea id="code5" style="display:none;">import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = cv2.imread('image.jpg', 0)
+
+kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
+sharpened = cv2.filter2D(img, -1, kernel)
+
+blur = cv2.GaussianBlur(img, (9, 9), 10.0)
+unsharp = cv2.addWeighted(img, 1.5, blur, -0.5, 0)
+
+plt.subplot(1, 3, 1)
+plt.imshow(img, cmap='gray')
+plt.title('Original')
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.imshow(sharpened, cmap='gray')
+plt.title('Sharpened')
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.imshow(unsharp, cmap='gray')
+plt.title('Unsharp Masking')
+plt.axis('off')
+plt.show()</textarea>
+
+    <textarea id="code6" style="display:none;">import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = cv2.imread('image.jpg', 0)
+
+sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+sobel = cv2.magnitude(sobelx, sobely)
+
+canny = cv2.Canny(img, 100, 200)
+
+plt.subplot(1, 3, 1)
+plt.imshow(img, cmap='gray')
+plt.title('Original')
+plt.axis('off')
+plt.subplot(1, 3, 2)
+plt.imshow(sobel, cmap='gray')
+plt.title('Sobel')
+plt.axis('off')
+plt.subplot(1, 3, 3)
+plt.imshow(canny, cmap='gray')
+plt.title('Canny')
+plt.axis('off')
+plt.show()</textarea>
+
+    <textarea id="code7" style="display:none;">import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+binary = cv2.imread('binary_image.jpg', 0)
+ret, binary = cv2.threshold(binary, 127, 255, cv2.THRESH_BINARY)
+kernel = np.ones((5, 5), np.uint8)
+
+dilated = cv2.dilate(binary, kernel, iterations=1)
+eroded = cv2.erode(binary, kernel, iterations=1)
+
+opening = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
+closing = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
+
+titles = ['Original', 'Dilation', 'Erosion', 'Opening', 'Closing']
+images = [binary, dilated, eroded, opening, closing]
+
+for i in range(5):
+    plt.subplot(1, 5, i + 1)
+    plt.imshow(images[i], cmap='gray')
+    plt.title(titles[i])
+    plt.axis('off')
+
+plt.show()</textarea>
+
+    <textarea id="code8" style="display:none;">import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = cv2.imread('image.jpg', 0)
+kernel = np.ones((5, 5), np.uint8)
+
+dilated_gray = cv2.dilate(img, kernel, iterations=1)
+eroded_gray = cv2.erode(img, kernel, iterations=1)
+
+opening_gray = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+closing_gray = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+
+titles = ['Original', 'Dilation', 'Erosion', 'Opening', 'Closing']
+images = [img, dilated_gray, eroded_gray, opening_gray, closing_gray]
+
+for i in range(5):
+    plt.subplot(1, 5, i + 1)
+    plt.imshow(images[i], cmap='gray')
+    plt.title(titles[i])
+    plt.axis('off')
+
+plt.show()</textarea>
+
+    <textarea id="code9" style="display:none;">import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = cv2.imread('image.jpg', 0)
+
+grad_x = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+grad_y = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+gradient = cv2.magnitude(grad_x, grad_y)
+
+laplacian = cv2.Laplacian(img, cv2.CV_64F)
+
+plt.subplot(1, 3, 1)
+plt.imshow(img, cmap='gray')
+plt.title('Original')
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.imshow(gradient, cmap='gray')
+plt.title('Gradient')
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.imshow(laplacian, cmap='gray')
+plt.title('Laplacian')
+plt.axis('off')
+
+plt.show()</textarea>
+
+    <textarea id="code10" style="display:none;">import cv2
+import numpy as np
+
+img_color = cv2.imread('shapes.jpg')
+gray = cv2.cvtColor(img_color, cv2.COLOR_BGR2GRAY)
+blur = cv2.GaussianBlur(gray, (5, 5), 0)
+edges = cv2.Canny(blur, 50, 150)
+
+lines = cv2.HoughLinesP(edges, 1, np.pi / 180, threshold=100, minLineLength=50, maxLineGap=10)
+if lines is not None:
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        cv2.line(img_color, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, 20, param1=50, param2=30, minRadius=0, maxRadius=0)
+if circles is not None:
+    circles = np.uint16(np.around(circles))
+    for i in circles[0, :]:
+        cv2.circle(img_color, (i[0], i[1]), i[2], (255, 0, 0), 2)
+        cv2.circle(img_color, (i[0], i[1]), 2, (0, 0, 255), 3)
+
+cv2.imshow('Detected Shapes', img_color)
+cv2.waitKey(0)
+cv2.destroyAllWindows()</textarea>
+
+    <script>
+        function copyCode(id, btn) {
+            var text = document.getElementById(id).value;
+            navigator.clipboard.writeText(text);
+            btn.innerText = 'Copied!';
+            setTimeout(function() {
+                btn.innerText = 'Copy';
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
